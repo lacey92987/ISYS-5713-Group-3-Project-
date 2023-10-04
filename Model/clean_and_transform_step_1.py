@@ -12,7 +12,12 @@
 
 # powers_basic (dataframe)
     # basic data for Superpower data table (power_id, power_name)
-    # to be exported to CSV and copied manually to ChatGPT to add power_type and power_level columns
+
+# powers_basic.csv (CSV file)
+    # to be copied manually into ChatGPT to add power_type and power_level columns
+
+# heroes.csv and heroes_powers.csv (CSV files)
+    # for checking results
 
 
 
