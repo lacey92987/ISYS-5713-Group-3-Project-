@@ -17,13 +17,19 @@
 
 
 import pandas as pd
+from pathlib import Path
 
+
+
+# specify the source_data and working_outputs directory
+source_data = Path('Model/source_data')
+working = Path('Model/working_outputs_inputs')
 
 
 # Read in and clean the heroes data
 
-# read in the heroes data
-with open('heroes_information.csv') as f:
+# read in the heroes_information data
+with open(source_data / 'heroes_information.csv') as f:
     heroes = pd.read_csv(f)
 
 # create unique ids in the heroes table
@@ -41,7 +47,7 @@ heroes = heroes.replace(to_replace='-', value=None, regex=False)
 
 
 # read in the raw powers data
-with open('super_hero_powers.csv') as f:
+with open(source_data / 'super_hero_powers.csv') as f:
     powers_raw = pd.read_csv(f)
 
 
@@ -91,3 +97,14 @@ heroes_powers = heroes_powers.dropna(subset=['hero_id','power_id'])
 
 # drop hero_name and power_name
 heroes_powers = heroes_powers.drop(columns=['hero_name','power_name'])
+
+
+
+# export the powers_basic table to CSV for further processing in ChatGPT
+powers_basic.to_csv(working / 'powers_basic.csv', index=False)
+
+
+
+# export the heroes and heroes_powers tables to CSV to check results
+heroes.to_csv(working / 'heroes.csv', index=False)
+heroes_powers.to_csv(working / 'heroes_powers.csv', index=False)
