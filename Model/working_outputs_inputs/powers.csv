@@ -1,0 +1,168 @@
+power_id,power_name,power_type,power_level
+1,Agility,Physical Enhancements,7
+2,Accelerated Healing,Physical Enhancements,6
+3,Lantern Power Ring,Energy Manipulation,9
+4,Dimensional Awareness,Sensory/Perception Powers,8
+5,Cold Resistance,Stealth and Survival Powers,5
+6,Durability,Physical Enhancements,8
+7,Stealth,Stealth and Survival Powers,7
+8,Energy Absorption,Energy Manipulation,8
+9,Flight,Energy Manipulation,8
+10,Danger Sense,Sensory/Perception Powers,8
+11,Underwater breathing,Stealth and Survival Powers,7
+12,Marksmanship,Skills and Mastery,7
+13,Weapons Master,Skills and Mastery,7
+14,Power Augmentation,Enhancements and Miscellaneous,7
+15,Animal Attributes,Enhancements and Miscellaneous,7
+16,Longevity,Enhancements and Miscellaneous,6
+17,Intelligence,Enhancements and Miscellaneous,6
+18,Super Strength,Physical Enhancements,9
+19,Cryokinesis,Physical Enhancements,7
+20,Telepathy,Sensory/Perception Powers,8
+21,Energy Armor,Energy Manipulation,7
+22,Energy Blasts,Energy Manipulation,7
+23,Duplication,Enhancements and Miscellaneous,6
+24,Size Changing,Enhancements and Miscellaneous,6
+25,Density Control,Enhancements and Miscellaneous,6
+26,Stamina,Enhancements and Miscellaneous,6
+27,Astral Travel,Sensory/Perception Powers,7
+28,Audio Control,Sensory/Perception Powers,6
+29,Dexterity,Enhancements and Miscellaneous,5
+30,Omnitrix,Enhancements and Miscellaneous,5
+31,Super Speed,Physical Enhancements,7
+32,Possession,Stealth and Survival Powers,5
+33,Animal Oriented Powers,Skills and Mastery,5
+34,Weapon-based Powers,Skills and Mastery,5
+35,Electrokinesis,Energy Manipulation,4
+36,Darkforce Manipulation,Energy Manipulation,4
+37,Death Touch,Skills and Mastery,4
+38,Teleportation,Stealth and Survival Powers,5
+39,Enhanced Senses,Sensory/Perception Powers,6
+40,Telekinesis,Sensory/Perception Powers,4
+41,Energy Beams,Energy Manipulation,6
+42,Magic,Skills and Mastery,6
+43,Hyperkinesis,Enhancements and Miscellaneous,5
+44,Jump,Physical Enhancements,4
+45,Clairvoyance,Sensory/Perception Powers,5
+46,Dimensional Travel,Sensory/Perception Powers,5
+47,Power Sense,Sensory/Perception Powers,6
+48,Shapeshifting,Stealth and Survival Powers,5
+49,Peak Human Condition,Physical Enhancements,6
+50,Immortality,Enhancements and Miscellaneous,6
+51,Camouflage,Stealth and Survival Powers,6
+52,Element Control,Energy Manipulation,4
+53,Phasing,Stealth and Survival Powers,4
+54,Astral Projection,Sensory/Perception Powers,5
+55,Electrical Transport,Energy Manipulation,5
+56,Fire Control,Energy Manipulation,5
+57,Projection,Skills and Mastery,4
+58,Summoning,Enhancements and Miscellaneous,4
+59,Enhanced Memory,Enhancements and Miscellaneous,6
+60,Reflexes,Physical Enhancements,7
+61,Invulnerability,Physical Enhancements,8
+62,Energy Constructs,Energy Manipulation,7
+63,Force Fields,Energy Manipulation,7
+64,Self-Sustenance,Stealth and Survival Powers,4
+65,Anti-Gravity,Energy Manipulation,4
+66,Empathy,Sensory/Perception Powers,6
+67,Power Nullifier,Stealth and Survival Powers,4
+68,Radiation Control,Energy Manipulation,6
+69,Psionic Powers,Skills and Mastery,4
+70,Elasticity,Physical Enhancements,6
+71,Substance Secretion,Enhancements and Miscellaneous,5
+72,Elemental Transmogrification,Enhancements and Miscellaneous,6
+73,Technopath/Cyberpath,Skills and Mastery,5
+74,Photographic Reflexes,Skills and Mastery,6
+75,Seismic Power,Energy Manipulation,6
+76,Animation,Enhancements and Miscellaneous,5
+77,Precognition,Sensory/Perception Powers,6
+78,Mind Control,Skills and Mastery,5
+79,Fire Resistance,Stealth and Survival Powers,5
+80,Power Absorption,Skills and Mastery,4
+81,Enhanced Hearing,Physical Enhancements,6
+82,Nova Force,Energy Manipulation,4
+83,Insanity,Stealth and Survival Powers,4
+84,Hypnokinesis,Stealth and Survival Powers,5
+85,Animal Control,Skills and Mastery,3
+86,Natural Armor,Enhancements and Miscellaneous,4
+87,Intangibility,Stealth and Survival Powers,4
+88,Enhanced Sight,Enhancements and Miscellaneous,4
+89,Molecular Manipulation,Enhancements and Miscellaneous,5
+90,Heat Generation,Energy Manipulation,4
+91,Adaptation,Stealth and Survival Powers,3
+92,Gliding,Stealth and Survival Powers,1
+93,Power Suit,Enhancements and Miscellaneous,5
+94,Mind Blast,Skills and Mastery,6
+95,Probability Manipulation,Stealth and Survival Powers,5
+96,Gravity Control,Energy Manipulation,4
+97,Regeneration,Enhancements and Miscellaneous,5
+98,Light Control,Energy Manipulation,5
+99,Echolocation,Sensory/Perception Powers,4
+100,Levitation,Stealth and Survival Powers,3
+101,Toxin and Disease Control,Skills and Mastery,3
+102,Banish,Stealth and Survival Powers,5
+103,Energy Manipulation,Energy Manipulation,4
+104,Heat Resistance,Stealth and Survival Powers,5
+105,Natural Weapons,Physical Enhancements,6
+106,Time Travel,Sensory/Perception Powers,4
+107,Enhanced Smell,Enhancements and Miscellaneous,4
+108,Illusions,Stealth and Survival Powers,5
+109,Thirstokinesis,Stealth and Survival Powers,2
+110,Hair Manipulation,Physical Enhancements,5
+111,Illumination,Enhancements and Miscellaneous,4
+112,Omnipotent,Enhancements and Miscellaneous,6
+113,Cloaking,Stealth and Survival Powers,5
+114,Changing Armor,Enhancements and Miscellaneous,4
+115,Power Cosmic,Energy Manipulation,4
+116,Biokinesis,Stealth and Survival Powers,4
+117,Water Control,Energy Manipulation,4
+118,Radiation Immunity,Enhancements and Miscellaneous,4
+119,Vision - Telescopic,Sensory/Perception Powers,4
+120,Toxin and Disease Resistance,Enhancements and Miscellaneous,4
+121,Spatial Awareness,Energy Manipulation,4
+122,Energy Resistance,Energy Manipulation,6
+123,Telepathy Resistance,Sensory/Perception Powers,3
+124,Molecular Combustion,Energy Manipulation,5
+125,Omnilingualism,Skills and Mastery,4
+126,Portal Creation,Energy Manipulation,4
+127,Magnetism,Energy Manipulation,4
+128,Mind Control Resistance,Sensory/Perception Powers,3
+129,Plant Control,Stealth and Survival Powers,4
+130,Sonar,Sensory/Perception Powers,4
+131,Sonic Scream,Energy Manipulation,5
+132,Time Manipulation,Sensory/Perception Powers,4
+133,Enhanced Touch,Physical Enhancements,5
+134,Magic Resistance,Stealth and Survival Powers,4
+135,Invisibility,Stealth and Survival Powers,6
+136,Sub-Mariner,Physical Enhancements,7
+137,Radiation Absorption,Energy Manipulation,6
+138,Intuitive aptitude,Enhancements and Miscellaneous,4
+139,Vision - Microscopic,Sensory/Perception Powers,4
+140,Melting,Energy Manipulation,4
+141,Wind Control,Energy Manipulation,5
+142,Super Breath,Physical Enhancements,4
+143,Wallcrawling,Stealth and Survival Powers,6
+144,Vision - Night,Sensory/Perception Powers,4
+145,Vision - Infrared,Sensory/Perception Powers,1
+146,Grim Reaping,Skills and Mastery,4
+147,Matter Absorption,Energy Manipulation,5
+148,The Force,Energy Manipulation,4
+149,Resurrection,Enhancements and Miscellaneous,4
+150,Terrakinesis,Enhancements and Miscellaneous,4
+151,Vision - Heat,Sensory/Perception Powers,4
+152,Vitakinesis,Enhancements and Miscellaneous,4
+153,Radar Sense,Sensory/Perception Powers,4
+154,Qwardian Power Ring,Skills and Mastery,5
+155,Weather Control,Energy Manipulation,4
+156,Vision - X-Ray,Sensory/Perception Powers,4
+157,Vision - Thermal,Sensory/Perception Powers,4
+158,Web Creation,Stealth and Survival Powers,5
+159,Reality Warping,Energy Manipulation,4
+160,Odin Force,Energy Manipulation,4
+161,Symbiote Costume,Physical Enhancements,4
+162,Speed Force,Energy Manipulation,4
+163,Phoenix Force,Energy Manipulation,4
+164,Molecular Dissipation,Energy Manipulation,5
+165,Vision - Cryo,Sensory/Perception Powers,3
+166,Omnipresent,Enhancements and Miscellaneous,6
+167,Omniscient,Enhancements and Miscellaneous,6
