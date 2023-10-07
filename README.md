@@ -28,3 +28,7 @@
 | | | | |
 | **HeroesPowers** | HeroId | INT | **Composite Primary Key**, **Foreign Key** |
 | HeroesPowers | PowerId | INT | **Composite Primary Key**, **Foreign Key** |
+
+## Data Source
+https://www.kaggle.com/datasets/claudiodavi/superhero-set  
+Accessed October 2023
