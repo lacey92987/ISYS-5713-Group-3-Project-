@@ -5,12 +5,10 @@ from pathlib import Path
 
 # Define the path to the data folder
 source_folder = Path('Model/working_outputs_inputs')
-
-
-# connect to the output database
+output_folder = Path('Model')
 
 # Set the output database filename
-db_filename = 'database.db'
+db_filename = output_folder / 'database.db'
 
 # Create the database connection
 conn = sqlite3.connect(db_filename)
