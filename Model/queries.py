@@ -24,18 +24,22 @@ def run_query(query_text, params=None):
 
 
 
+# Function to get all powers for a given hero_id
+def get_powers_for_hero_id(hero_id):
+    query_text = """
+        SELECT p.power_id, p.power_name, p.power_type, p.power_level
+        FROM heroes_powers hp, powers p
+        WHERE hp.power_id = p.power_id
+            AND hp.hero_id = ?;
+        """
+    params = (hero_id,)
+
+    results = run_query(query_text, params)
+
+    return results
+
 
 # TEST INPUTS
 
-query_text = """
-    SELECT *
-    FROM heroes_powers hp, powers p
-    WHERE hp.power_id = p.power_id
-        AND hp.hero_id = ?;
-    """
-params = (1,)
-
-results = run_query(query_text, db_file, params)
-print(results)
-
-
+powers_result = get_powers_for_hero_id(2)
+print(powers_result)
