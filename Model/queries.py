@@ -6,6 +6,7 @@
     # Will need to be updated to return results as object(s) of a class (Hero, Power, etc.)
 
 
+
 import sqlite3
 import pandas as pd
 from pathlib import Path
