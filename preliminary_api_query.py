@@ -7,6 +7,7 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
+
 ###
 # Setup
 ###
@@ -15,31 +16,30 @@ CORS(app)
 data_folder = Path("Model")
 db_file = data_folder / "database.db"
 
+
 ###
 # Routes
 ###
-
 @app.route('/')
 def index():
     return 'Hello, World!'
 
 
-# define a route to get a power by id with the GET method
 @app.route('/v0/powers/<id>', methods=['GET'])
 def get_power(id):
-    """Returns a power by id"""
+    """Returns a power by id, in JSON dictionary format"""
     power = select_power(id)
     if power is None:
         return jsonify(None), 404
     else:
         return jsonify(power.to_dictionary())
 
+
 ###
 # Classes
 ###
-
 class Power:
-    """Class for a power"""
+    """Class to represent a power."""
     def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
         self.power_name = power_name
         self.power_level = power_level
@@ -59,10 +59,24 @@ class Power:
 ###
 # Queries
 ###
-
-# Basic function to run a query, closing the connection using the with statement
 def run_query(query, db_file, fetchone=False, params=()):
-    """Executes a query and returns the results as tuple(s), closing the connection."""
+    """
+    Executes a query and returns the results as tuple(s), closing the connection.
+    
+    Parameters
+    ----------
+    query : str
+        The query to execute
+    db_file : str
+        The path to the database file
+    fetchone : bool, optional
+        If True, returns only the first result (as one tuple).
+        If False, returns all results (as a list of tuples).
+        Default is False.
+    params : tuple, optional
+        The parameters to pass to the query. Default is empty tuple.
+    """
+
     with sqlite3.connect(db_file) as cnn:
         cur = cnn.cursor()
         cur.execute(query, params)
@@ -72,8 +86,8 @@ def run_query(query, db_file, fetchone=False, params=()):
             return cur.fetchall()
 
 
-# define a query to get a power by id
 def select_power(id):
+    """Returns a power by id, as a Power object"""
     query = """
         SELECT power_name, power_level, power_type, power_id
         FROM powers
@@ -87,11 +101,6 @@ def select_power(id):
         power = Power(result[0], result[1], result[2], result[3])
         return power
 
-# test
-# id = 10
-# test_result= get_power(id)
-# dictionary = test_result.to_dictionary()
-# print(dictionary)
 
 ###
 # Main
