@@ -4,6 +4,15 @@ import sqlite3
 import pandas as pd
 from pathlib import Path
 
+# define a class for powers
+class Power:
+    """Class for a power"""
+    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
+        self.power_id = power_id
+        self.power_name = power_name
+        self.power_type = power_type
+        self.power_level = power_level
+
 # specify the database file
 data_folder = Path("Model")
 db_file = data_folder / "database.db"
