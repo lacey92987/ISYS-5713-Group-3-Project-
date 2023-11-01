@@ -1,8 +1,27 @@
 # Preliminary file to test one query and API function in a single file
 
 import sqlite3
-import pandas as pd
 from pathlib import Path
+from flask import Flask
+from flask import jsonify
+from flask import request
+from flask_cors import CORS
+
+###
+# Setup
+###
+app = Flask(__name__) 
+CORS(app)
+data_folder = Path("Model")
+db_file = data_folder / "database.db"
+
+###
+# Routes
+###
+@app.route('/')
+def index():
+    return 'Hello, World!'
+
 
 # define a class for powers
 class Power:
@@ -22,10 +41,6 @@ class Power:
             "power_id": self.power_id
         }
         return power
-
-# specify the database file
-data_folder = Path("Model")
-db_file = data_folder / "database.db"
 
 
 # Basic function to run a query, closing the connection using the with statement
