@@ -8,10 +8,20 @@ from pathlib import Path
 class Power:
     """Class for a power"""
     def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
-        self.power_id = power_id
         self.power_name = power_name
-        self.power_type = power_type
         self.power_level = power_level
+        self.power_type = power_type
+        self.power_id = power_id
+    
+    def to_dictionary(self):
+        """Returns a dictionary representation of the power"""
+        power = {
+            "power_name": self.power_name,
+            "power_level": self.power_level,
+            "power_type": self.power_type,
+            "power_id": self.power_id
+        }
+        return power
 
 # specify the database file
 data_folder = Path("Model")
@@ -32,12 +42,21 @@ def run_query(query, db_file, fetchone=False, params=()):
 
 # define a query to get a power by id
 def get_power(id):
-    query = "SELECT * FROM powers WHERE power_id = ?;"
+    query = """
+        SELECT power_name, power_level, power_type, power_id
+        FROM powers
+        WHERE power_id = ?;
+        """
     params = (id,)
-    results = run_query(query, db_file, True, params)
-    return results
+    result = run_query(query, db_file, True, params)
+    if result is None:
+        return None
+    else:
+        power = Power(result[0], result[1], result[2], result[3])
+        return power
 
 # test
 id = 10
 test_result= get_power(id)
-print(test_result)
+dictionary = test_result.to_dictionary()
+print(dictionary)
