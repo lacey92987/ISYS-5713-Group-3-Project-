@@ -18,12 +18,26 @@ db_file = data_folder / "database.db"
 ###
 # Routes
 ###
+
 @app.route('/')
 def index():
     return 'Hello, World!'
 
 
-# define a class for powers
+# define a route to get a power by id with the GET method
+@app.route('/v0/powers/<id>', methods=['GET'])
+def get_power(id):
+    """Returns a power by id"""
+    power = select_power(id)
+    if power is None:
+        return jsonify(None), 404
+    else:
+        return jsonify(power.to_dictionary())
+
+###
+# Classes
+###
+
 class Power:
     """Class for a power"""
     def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
@@ -42,6 +56,9 @@ class Power:
         }
         return power
 
+###
+# Queries
+###
 
 # Basic function to run a query, closing the connection using the with statement
 def run_query(query, db_file, fetchone=False, params=()):
@@ -56,7 +73,7 @@ def run_query(query, db_file, fetchone=False, params=()):
 
 
 # define a query to get a power by id
-def get_power(id):
+def select_power(id):
     query = """
         SELECT power_name, power_level, power_type, power_id
         FROM powers
@@ -71,10 +88,10 @@ def get_power(id):
         return power
 
 # test
-id = 10
-test_result= get_power(id)
-dictionary = test_result.to_dictionary()
-print(dictionary)
+# id = 10
+# test_result= get_power(id)
+# dictionary = test_result.to_dictionary()
+# print(dictionary)
 
 ###
 # Main
