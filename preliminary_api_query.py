@@ -18,17 +18,23 @@ data_folder = Path("Model")
 db_file = data_folder / "database.db"
 
 
-# basic function to run a query and return a dataframe, closing the connection when done
-def run_query(query, db_file, params=None):
+# Basic function to run a query, closing the connection using the with statement
+def run_query(query, db_file, fetchone=False, params=()):
+    """Executes a query and returns the results as tuple(s), closing the connection."""
     with sqlite3.connect(db_file) as cnn:
-        return pd.read_sql(query, cnn, params=params)
-    
+        cur = cnn.cursor()
+        cur.execute(query, params)
+        if fetchone:
+            return cur.fetchone()
+        else:
+            return cur.fetchall()
+
 
 # define a query to get a power by id
 def get_power(id):
     query = "SELECT * FROM powers WHERE power_id = ?;"
     params = (id,)
-    results = run_query(query, db_file, params)
+    results = run_query(query, db_file, True, params)
     return results
 
 # test
