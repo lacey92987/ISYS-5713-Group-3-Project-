@@ -75,3 +75,10 @@ id = 10
 test_result= get_power(id)
 dictionary = test_result.to_dictionary()
 print(dictionary)
+
+###
+# Main
+###
+if __name__ == '__main__':
+    # This says: if this file is run directly, then run the Flask app
+    app.run(debug=False, use_reloader=False, passthrough_errors=True)
