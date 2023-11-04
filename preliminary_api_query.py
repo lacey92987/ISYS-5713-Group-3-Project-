@@ -1,4 +1,3 @@
-# Preliminary file to test one query and API function in a single file
 
 import sqlite3
 from pathlib import Path
