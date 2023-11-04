@@ -16,7 +16,7 @@ DATABASE_FILE = DB_PATH / 'database.db'
 
 # Get all (must have a filter) LIMIT
 @app.get(/heroes?limit=10)
-def select_all_heros():
+def select_all_heroes():
     
     print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
@@ -74,7 +74,7 @@ def select_powers(id):
     return cur.fetchone() 
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
-@app.get(/)
+@app.get(/heroes{id}powers)
 def select_heroes_powers:
 
     conn = sqlite3.connect(db_file)
