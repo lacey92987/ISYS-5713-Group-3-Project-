@@ -10,14 +10,74 @@ CORS(app)
 DB_PATH = Path.cwd() 
 DATABASE_FILE = DB_PATH / 'database.db'
 
+###
+# Classes
+###
+class Power:
+    """Class to represent a power."""
+    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
+        self.power_name = power_name
+        self.power_level = power_level
+        self.power_type = power_type
+        self.power_id = power_id
+    
+    def to_dictionary(self):
+        """Returns a dictionary representation of the power"""
+        power = {
+            "power_name": self.power_name,
+            "power_level": self.power_level,
+            "power_type": self.power_type,
+            "power_id": self.power_id
+        }
+        return power
 
+class Hero:
+    """Class to represent a hero."""
+    def __init__(self, hero_name, gender=None, eye_color=None, species=None, hair_color=None, height=None, weight=None, publisher=None, skin_color=None, alignment=None, hero_id=None, powers=[]):
+        self.hero_name = hero_name
+        self.gender = gender
+        self.eye_color = eye_color
+        self.species = species
+        self.hair_color = hair_color
+        self.height = height
+        self.weight = weight
+        self.publisher = publisher
+        self.skin_color = skin_color
+        self.alignment = alignment
+        self.hero_id = hero_id
+        self.powers = powers #List to contain power objects
+    
+    def to_dictionary(self):
+        """Returns a dictionary representation of the hero"""
+        hero = {
+            "hero_name": self.hero_name,
+            "gender": self.gender,
+            "eye_color": self.eye_color,
+            "species": self.species,
+            "hair_color": self.hair_color,
+            "height": self.height,
+            "weight": self.weight,
+            "publisher": self.publisher,
+            "skin_color": self.skin_color,
+            "alignment": self.alignment,
+            "hero_id": self.hero_id,
+            "powers": [power.to_dictionary() for power in self.powers]
+        }
+        return hero
+
+    
+
+###
+# Routes and Queries
+###
 
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
 @app.route('/heroes?limit=10')
 def get_heroes():
-    pass
+    heroes = select_all_heros()
+    return jsonify([hero.to_dictionary() for hero in heroes])
 
 def select_all_heros():
     
@@ -26,7 +86,12 @@ def select_all_heros():
     cur = conn.cursor()
     # Get column names from the sales table
     cur.execute('SELECT * FROM heroes LIMIT 10')
-    return cur.fetchall()
+    results = cur.fetchall()
+    heroes = []
+    for result in results:
+        hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
+        heroes.append(hero)
+    return heroes
     
 @app.route('/powers?limit=10')
 def get_powers():
