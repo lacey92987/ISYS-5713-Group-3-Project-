@@ -95,13 +95,14 @@ def select_all_heros(limit):
         hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
         heroes.append(hero)
     return heroes
-    
+
 @app.route('/powers', methods=['GET'])
 def get_powers():
     
     limit = request.args.get('limit', 10)
 
     powers = select_all_powers(limit)
+    return jsonify([power.to_dictionary() for power in powers])
 
 def select_all_powers(limit):
     
@@ -173,6 +174,30 @@ def select_power(id):
     return power
 
 # # Get that spans multiple tables (Heroes/powers/heroes_powers)
+
+@app.route('/heroes/<id>/powers', methods = ['GET'])
+def get_powers_by_hero(id):
+    powers = select_powers_by_hero(id)
+    return jsonify([power.to_dictionary() for power in powers])
+
+def select_powers_by_hero(hero_id):
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT p.power_name as "Name", p.power_level as "Level", p.power_type as "Type", p.power_id as "Id"
+                FROM heroes AS h
+                    JOIN heroes_powers AS hp ON h.hero_id = hp.hero_id
+                    JOIN powers AS p ON hp.power_id = p.power_id
+                WHERE h.hero_id = ?
+                ''',
+                (hero_id,))
+    results = cur.fetchall()
+    powers = []
+    for result in results:
+        power = Power(result[0], result[1], result[2], result[3])
+        powers.append(power)
+    return powers
+
 # # @app.route('/')
 # # def get_heroes_powers():
 # #     pass
