@@ -74,18 +74,21 @@ class Hero:
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
-@app.route('/heroes?limit=10', methods=['GET'])
+@app.route('/heroes', methods=['GET'])
 def get_heroes():
-    heroes = select_all_heros()
+
+    limit = request.args.get('limit', 10)
+
+    heroes = select_all_heros(limit)
     return jsonify([hero.to_dictionary() for hero in heroes])
 
-def select_all_heros():
+def select_all_heros(limit):
     
     print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
-    cur.execute('SELECT * FROM heroes LIMIT 10')
+    cur.execute('SELECT * FROM heroes LIMIT ?', (limit,))
     results = cur.fetchall()
     heroes = []
     for result in results:
@@ -93,18 +96,25 @@ def select_all_heros():
         heroes.append(hero)
     return heroes
     
-@app.route('/powers?limit=10')
+@app.route('/powers', methods=['GET'])
 def get_powers():
-    pass
+    
+    limit = request.args.get('limit', 10)
 
-def select_all_powers():
+    powers = select_all_powers(limit)
+
+def select_all_powers(limit):
     
     print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
-    cur.execute('SELECT * FROM powers LIMIT 10')
-    return cur.fetchall()
+    cur.execute('SELECT * FROM powers LIMIT ?', (limit,))
+    results = cur.fetchall()
+    powers = []
+    for result in results:
+        power = Power(result[1], result[2], result[3], result[0])
+        powers.append(power)
 
 @app.route('/powers_basic?limit=10')
 def get_powers_basic():
