@@ -7,88 +7,206 @@ from pathlib import Path
 
 app = Flask(__name__) 
 CORS(app)
-DB_PATH = Path.cwd() 
+DB_PATH = Path.cwd() / 'Model'
 DATABASE_FILE = DB_PATH / 'database.db'
 
+###
+# Classes
+###
+class Power:
+    """Class to represent a power."""
+    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
+        self.power_name = power_name
+        self.power_level = power_level
+        self.power_type = power_type
+        self.power_id = power_id
+    
+    def to_dictionary(self):
+        """Returns a dictionary representation of the power"""
+        power = {
+            "power_name": self.power_name,
+            "power_level": self.power_level,
+            "power_type": self.power_type,
+            "power_id": self.power_id
+        }
+        return power
 
+class Hero:
+    """Class to represent a hero."""
+    def __init__(self, hero_name, gender=None, eye_color=None, species=None, hair_color=None, height=None, weight=None, publisher=None, skin_color=None, alignment=None, hero_id=None, powers=[]):
+        self.hero_name = hero_name
+        self.gender = gender
+        self.eye_color = eye_color
+        self.species = species
+        self.hair_color = hair_color
+        self.height = height
+        self.weight = weight
+        self.publisher = publisher
+        self.skin_color = skin_color
+        self.alignment = alignment
+        self.hero_id = hero_id
+        self.powers = powers #List to contain power objects
+    
+    def to_dictionary(self):
+        """Returns a dictionary representation of the hero"""
+        hero = {
+            "hero_name": self.hero_name,
+            "gender": self.gender,
+            "eye_color": self.eye_color,
+            "species": self.species,
+            "hair_color": self.hair_color,
+            "height": self.height,
+            "weight": self.weight,
+            "publisher": self.publisher,
+            "skin_color": self.skin_color,
+            "alignment": self.alignment,
+            "hero_id": self.hero_id,
+            "powers": [power.to_dictionary() for power in self.powers]
+        }
+        return hero
+
+    
+
+###
+# Routes and Queries
+###
 
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
-@app.get(/heroes?limit=10)
-def select_all_heroes():
-    
-    print(DATABASE_FILE)
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    # Get column names from the sales table
-    cur.execute('SELECT * FROM heroes LIMIT 10')
-    return cur.fetchall()
-    
-@app.get(/powers?limit=10)
-def select_all_powers():
-    
-    print(DATABASE_FILE)
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    # Get column names from the sales table
-    cur.execute('SELECT * FROM powers LIMIT 10')
-    return cur.fetchall()
+ GA3-Carson
+@app.route('/heroes', methods=['GET'])
+def get_heroes():
 
-@app.get(/powers_basic?limit=10)
-def select_all_powers_basic():
-    
-    print(DATABASE_FILE)
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    # Get column names from the sales table
-    cur.execute('SELECT * FROM powers_basic LIMIT 10')
-    return cur.fetchall()
+    limit = request.args.get('limit', 10)
 
-@app.get(/heroes_powers?limit=10)
-def select_all_heros_powers():
+    heroes = select_all_heros(limit)
+    return jsonify([hero.to_dictionary() for hero in heroes])
+
+def select_all_heros(limit):
+
+# @app.get(/heroes?limit=10)
+# def select_all_heroes():
+    
+#     print(DATABASE_FILE)
+#     conn = sqlite3.connect(DATABASE_FILE)
+#     cur = conn.cursor()
+#     # Get column names from the sales table
+#     cur.execute('SELECT * FROM heroes LIMIT 10')
+#     return cur.fetchall()
+    
+# @app.get(/powers?limit=10)
+# def select_all_powers():
+
     
     print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
-    cur.execute('SELECT * FROM heroes_powers LIMIT 10')
-    return cur.fetchall()
+    cur.execute('SELECT * FROM heroes LIMIT ?', (limit,))
+    results = cur.fetchall()
+    heroes = []
+    for result in results:
+        hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
+        heroes.append(hero)
+    return heroes
+
+@app.route('/powers', methods=['GET'])
+def get_powers():
+    
+    limit = request.args.get('limit', 10)
+
+    powers = select_all_powers(limit)
+    return jsonify([power.to_dictionary() for power in powers])
+
+def select_all_powers(limit):
+    
+    print(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+    # Get column names from the sales table
+    cur.execute('SELECT * FROM powers LIMIT ?', (limit,))
+    results = cur.fetchall()
+    powers = []
+    for result in results:
+        power = Power(result[1], result[2], result[3], result[0])
+        powers.append(power)
 
 # Get one by one
-@app.get(/heroes/{id})
-def select_heroes(id):
+@app.route('/heroes/<id>', methods = ['GET'])
+def get_hero(id):
+    hero = select_hero(id)
+    return jsonify(hero.to_dictionary())
+
+def select_hero(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (id,))
-    return cur.fetchone() 
+    result = cur.fetchone()
+    hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
+    return hero
 
-@app.get(/powers/{id})
-def select_powers(id):
+@app.route('/powers/<id>', methods = ['GET'])
+def get_power(id):
+    power = select_power(id)
+    return jsonify(power.to_dictionary())
+
+def select_power(id):
     
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
     cur.execute('SELECT * FROM powers WHERE power_id = ?', (id,))
-    return cur.fetchone() 
+    result = cur.fetchone()
+    power = Power(result[1], result[2], result[3], result[0])
+    return power
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
-@app.get(/heroes{id}powers)
-def select_heroes_powers:
+ GA3-Carson
 
-    conn = sqlite3.connect(db_file)
-    cursor = conn.cursor()
-    cur.execute('''SELECT h.hero_name as "Name", p.power_name as "Power"
-    FROM heroes AS h
-    JOIN heroes_powers.heroes_powers AS hp ON h.hero_id = hp.hero_id
-    JOIN powers.powers AS p ON hp.power_id = p.power_id;
-''')
-    return cur.fetchall()
+@app.route('/heroes/<id>/powers', methods = ['GET'])
+def get_powers_by_hero(id):
+    powers = select_powers_by_hero(id)
+    return jsonify([power.to_dictionary() for power in powers])
+
+def select_powers_by_hero(hero_id):
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT p.power_name as "Name", p.power_level as "Level", p.power_type as "Type", p.power_id as "Id"
+                FROM heroes AS h
+                    JOIN heroes_powers AS hp ON h.hero_id = hp.hero_id
+                    JOIN powers AS p ON hp.power_id = p.power_id
+                WHERE h.hero_id = ?
+                ''',
+                (hero_id,))
+    results = cur.fetchall()
+    powers = []
+    for result in results:
+        power = Power(result[0], result[1], result[2], result[3])
+        powers.append(power)
+    return powers
+
+# @app.get(/heroes{id}powers)
+# def select_heroes_powers:
+
+#     conn = sqlite3.connect(db_file)
+#     cursor = conn.cursor()
+#     cur.execute('''SELECT h.hero_name as "Name", p.power_name as "Power"
+#     FROM heroes AS h
+#     JOIN heroes_powers.heroes_powers AS hp ON h.hero_id = hp.hero_id
+#     JOIN powers.powers AS p ON hp.power_id = p.power_id;
+# ''')
+#     return cur.fetchall()
+
 
 # POST - Create a new entity for your database (can be a single table or multiple tables)
 @app.route('/heroes', methods=['POST'])
 def post_hero():
+    pass
+
+def insert_hero():
 
     hero_name = heroes.get('HeroName','')
     gender = heroes.get('Gender','')
@@ -115,6 +233,9 @@ def post_hero():
 
 # PUT - Update an entity in your database
 @app.route('/heroes',methods=['PUT'])
+def put_hero():
+    pass
+
 def update_hero():
 
     hero_id = int(heroes.get('HeroId',-1))
@@ -194,6 +315,9 @@ def update_hero():
 # DELETE - Remove an entity from your database
 @app.route('/heroes/<int:id>', methods=['DELETE'])
 def delete_hero(id):
+    pass
+
+def remove_hero(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
@@ -201,4 +325,9 @@ def delete_hero(id):
     conn.commit()
     return {'success':True}
 
-   
+###
+# Main
+###
+if __name__ == '__main__':
+    # This says: if this file is run directly, then run the Flask app
+    app.run(debug=False, use_reloader=False, passthrough_errors=True)
