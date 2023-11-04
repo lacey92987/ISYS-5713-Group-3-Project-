@@ -74,7 +74,7 @@ class Hero:
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
-@app.route('/heroes?limit=10')
+@app.route('/heroes?limit=10', methods=['GET'])
 def get_heroes():
     heroes = select_all_heros()
     return jsonify([hero.to_dictionary() for hero in heroes])
@@ -157,20 +157,20 @@ def select_power(id):
     return cur.fetchone() 
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
-@app.route('/')
-def get_heroes_powers():
-    pass
+# @app.route('/')
+# def get_heroes_powers():
+#     pass
 
-def select_heroes_powers():
+# def select_heroes_powers():
 
-    conn = sqlite3.connect(db_file)
-    cursor = conn.cursor()
-    cur.execute('''SELECT h.hero_name as "Name", p.power_name as "Power"
-    FROM heroes AS h
-    JOIN heroes_powers.heroes_powers AS hp ON h.hero_id = hp.hero_id
-    JOIN powers.powers AS p ON hp.power_id = p.power_id;
-''')
-    return cur.fetchall()
+#     conn = sqlite3.connect(db_file)
+#     cursor = conn.cursor()
+#     cur.execute('''SELECT h.hero_name as "Name", p.power_name as "Power"
+#     FROM heroes AS h
+#     JOIN heroes_powers.heroes_powers AS hp ON h.hero_id = hp.hero_id
+#     JOIN powers.powers AS p ON hp.power_id = p.power_id;
+# ''')
+#     return cur.fetchall()
 
 # POST - Create a new entity for your database (can be a single table or multiple tables)
 @app.route('/heroes', methods=['POST'])
@@ -296,4 +296,9 @@ def remove_hero(id):
     conn.commit()
     return {'success':True}
 
-   
+###
+# Main
+###
+if __name__ == '__main__':
+    # This says: if this file is run directly, then run the Flask app
+    app.run(debug=False, use_reloader=False, passthrough_errors=True)
