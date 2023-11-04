@@ -16,6 +16,9 @@ DATABASE_FILE = DB_PATH / 'database.db'
 
 # Get all (must have a filter) LIMIT
 @app.route('/heroes?limit=10')
+def get_heroes():
+    pass
+
 def select_all_heros():
     
     print(DATABASE_FILE)
@@ -26,6 +29,9 @@ def select_all_heros():
     return cur.fetchall()
     
 @app.route('/powers?limit=10')
+def get_powers():
+    pass
+
 def select_all_powers():
     
     print(DATABASE_FILE)
@@ -36,6 +42,9 @@ def select_all_powers():
     return cur.fetchall()
 
 @app.route('/powers_basic?limit=10')
+def get_powers_basic():
+    pass
+
 def select_all_powers_basic():
     
     print(DATABASE_FILE)
@@ -46,6 +55,9 @@ def select_all_powers_basic():
     return cur.fetchall()
 
 @app.route('/heroes_powers?limit=10')
+def get_heroes_powers():
+    pass
+
 def select_all_heros_powers():
     
     print(DATABASE_FILE)
@@ -57,7 +69,10 @@ def select_all_heros_powers():
 
 # Get one by one
 @app.route('/heroes/{id}')
-def select_heroes(id):
+def get_hero(id):
+    pass
+
+def select_hero(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
@@ -65,7 +80,10 @@ def select_heroes(id):
     return cur.fetchone() 
 
 @app.route('/powers/{id}')
-def select_powers(id):
+def get_power(id):
+    pass
+
+def select_power(id):
     
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
@@ -75,6 +93,9 @@ def select_powers(id):
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
 @app.route('/')
+def get_heroes_powers():
+    pass
+
 def select_heroes_powers():
 
     conn = sqlite3.connect(db_file)
@@ -89,6 +110,9 @@ def select_heroes_powers():
 # POST - Create a new entity for your database (can be a single table or multiple tables)
 @app.route('/heroes', methods=['POST'])
 def post_hero():
+    pass
+
+def insert_hero():
 
     hero_name = heroes.get('HeroName','')
     gender = heroes.get('Gender','')
@@ -115,6 +139,9 @@ def post_hero():
 
 # PUT - Update an entity in your database
 @app.route('/heroes',methods=['PUT'])
+def put_hero():
+    pass
+
 def update_hero():
 
     hero_id = int(heroes.get('HeroId',-1))
@@ -194,6 +221,9 @@ def update_hero():
 # DELETE - Remove an entity from your database
 @app.route('/heroes/<int:id>', methods=['DELETE'])
 def delete_hero(id):
+    pass
+
+def remove_hero(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
