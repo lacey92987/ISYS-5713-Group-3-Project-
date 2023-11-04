@@ -15,7 +15,7 @@ DATABASE_FILE = DB_PATH / 'database.db'
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
-@app.get(/heroes?limit=10)
+@app.route('/heroes?limit=10')
 def select_all_heros():
     
     print(DATABASE_FILE)
@@ -25,7 +25,7 @@ def select_all_heros():
     cur.execute('SELECT * FROM heroes LIMIT 10')
     return cur.fetchall()
     
-@app.get(/powers?limit=10)
+@app.route('/powers?limit=10')
 def select_all_powers():
     
     print(DATABASE_FILE)
@@ -35,7 +35,7 @@ def select_all_powers():
     cur.execute('SELECT * FROM powers LIMIT 10')
     return cur.fetchall()
 
-@app.get(/powers_basic?limit=10)
+@app.route('/powers_basic?limit=10')
 def select_all_powers_basic():
     
     print(DATABASE_FILE)
@@ -45,7 +45,7 @@ def select_all_powers_basic():
     cur.execute('SELECT * FROM powers_basic LIMIT 10')
     return cur.fetchall()
 
-@app.get(/heroes_powers?limit=10)
+@app.route('/heroes_powers?limit=10')
 def select_all_heros_powers():
     
     print(DATABASE_FILE)
@@ -56,7 +56,7 @@ def select_all_heros_powers():
     return cur.fetchall()
 
 # Get one by one
-@app.get(/heroes/{id})
+@app.route('/heroes/{id}')
 def select_heroes(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
@@ -64,7 +64,7 @@ def select_heroes(id):
     cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (id,))
     return cur.fetchone() 
 
-@app.get(/powers/{id})
+@app.route('/powers/{id}')
 def select_powers(id):
     
     conn = sqlite3.connect(DATABASE_FILE)
@@ -74,8 +74,8 @@ def select_powers(id):
     return cur.fetchone() 
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
-@app.get(/)
-def select_heroes_powers:
+@app.route('/')
+def select_heroes_powers():
 
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
