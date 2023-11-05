@@ -74,7 +74,7 @@ class Hero:
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
- GA3-Carson
+#  GA3-Carson
 @app.route('/heroes', methods=['GET'])
 def get_heroes():
 
@@ -163,7 +163,7 @@ def select_power(id):
     return power
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
- GA3-Carson
+#  GA3-Carson
 
 @app.route('/heroes/<id>/powers', methods = ['GET'])
 def get_powers_by_hero(id):
