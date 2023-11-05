@@ -4,25 +4,35 @@ from flask import request
 from flask_cors import CORS
 import sqlite3
 from pathlib import Path
+from dataclasses import dataclass, field
+from typing import List
 
 app = Flask(__name__) 
 CORS(app)
 DB_PATH = Path.cwd() / 'Model'
 DATABASE_FILE = DB_PATH / 'database.db'
 
+
+# Original database file used in reset_database()
+ORIGINAL_DB_PATH = Path.cwd() / 'GA _assignment_2'
+ORIGINAL_DATABASE_FILE = ORIGINAL_DB_PATH / 'database.db'
+
+
+
 @app.route('/')
 def index():
     return 'Hello, World!'
+
 ###
 # Classes
 ###
+@dataclass
 class Power:
     """Class to represent a power."""
-    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
-        self.power_name = power_name
-        self.power_level = power_level
-        self.power_type = power_type
-        self.power_id = power_id
+    power_name: str
+    power_level: int = 0
+    power_type: str = None
+    power_id: int = None
     
     def to_dictionary(self):
         """Returns a dictionary representation of the power"""
@@ -34,21 +44,21 @@ class Power:
         }
         return power
 
+@dataclass
 class Hero:
     """Class to represent a hero."""
-    def __init__(self, hero_name, gender=None, eye_color=None, species=None, hair_color=None, height=None, weight=None, publisher=None, skin_color=None, alignment=None, hero_id=None, powers=[]):
-        self.hero_name = hero_name
-        self.gender = gender
-        self.eye_color = eye_color
-        self.species = species
-        self.hair_color = hair_color
-        self.height = height
-        self.weight = weight
-        self.publisher = publisher
-        self.skin_color = skin_color
-        self.alignment = alignment
-        self.hero_id = hero_id
-        self.powers = powers #List to contain power objects
+    hero_name: str
+    gender: str = None
+    eye_color: str = None
+    species: str = None
+    hair_color: str = None
+    height: float = None
+    weight: float = None
+    publisher: str = None
+    skin_color: str = None
+    alignment: str = None
+    hero_id: int = None
+    powers: List[Power] = field(default_factory=list)
     
     def to_dictionary(self):
         """Returns a dictionary representation of the hero"""
@@ -73,6 +83,61 @@ class Hero:
 ###
 # Routes and Queries
 ###
+
+@app.route('/config/reset_database', methods=['PUT'])
+def reset_database():
+    """
+    Resets the database to the original data by copying the original database file.
+    The function will only execute if the whole process is successful, so the database will not be left in a broken state.
+    Otherwise, an error will be returned and the database will not be changed.
+
+    The original database file is specified in the ORIGINAL_DATABASE_FILE variable.
+
+    Note, resets the contents but does not reset the schema. (I.e. the tables are not dropped and recreated.)
+    Note, this does not check whether the database is already in the original state.
+        (I.e. a success message does not necessarily mean there were any changes to reset.)
+    """
+    # If the ORIGINAL_DATABASE_FILE does not exist, return an error and stop the function
+    if not ORIGINAL_DATABASE_FILE.is_file():
+        return jsonify({"error": "The original database file does not exist at the expected path. The database has not been reset."}), 500
+    
+    # Uses the try keyword to ensure 
+    try:
+        # Clear the database
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+        cur.execute('DELETE FROM heroes_powers')
+        cur.execute('DELETE FROM heroes')
+        cur.execute('DELETE FROM powers')
+        conn.commit()
+        conn.close()
+
+        # Copy the original database file
+        conn = sqlite3.connect(ORIGINAL_DATABASE_FILE)
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM heroes')
+        heroes = cur.fetchall()
+        cur.execute('SELECT * FROM powers')
+        powers = cur.fetchall()
+        cur.execute('SELECT * FROM heroes_powers')
+        heroes_powers = cur.fetchall()
+        conn.close()
+
+        # Insert the original data into the database
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+        cur.executemany('INSERT INTO heroes VALUES (?,?,?,?,?,?,?,?,?,?,?)', heroes)
+        cur.executemany('INSERT INTO powers VALUES (?,?,?,?)', powers)
+        cur.executemany('INSERT INTO heroes_powers VALUES (?,?)', heroes_powers)
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "The database was successfully reset to the original state."}), 200
+
+    except Exception as e:
+        print("An error occurred while resetting the database. The database has not been reset.")
+        print(e)
+        return jsonify({"error": "An error occurred while resetting the database. The database has not been reset."}), 500
 
 # GET - at least one for every table (except mapping tables)
 
@@ -127,30 +192,42 @@ def select_all_powers(limit):
 @app.route('/heroes/<id>', methods = ['GET'])
 def get_hero(id):
     hero = select_hero(id)
-    return jsonify(hero.to_dictionary())
+    if hero is None:
+        return jsonify({"error": "Hero not found"}), 404
+    return jsonify(hero.to_dictionary()), 200
 
 def select_hero(id):
-   
+    print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (id,))
     result = cur.fetchone()
+    print(result)
+    if result is None:
+        return None
     hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
+    print(hero.to_dictionary())
     return hero
 
 @app.route('/powers/<id>', methods = ['GET'])
 def get_power(id):
     power = select_power(id)
-    return jsonify(power.to_dictionary())
+    if power is None:
+        return jsonify({"error": "Power not found"}), 404
+    return jsonify(power.to_dictionary()), 200
 
 def select_power(id):
-    
+    print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
     cur.execute('SELECT * FROM powers WHERE power_id = ?', (id,))
     result = cur.fetchone()
+    print(result)
+    if result is None:
+        return None
     power = Power(result[1], result[2], result[3], result[0])
+    print(power.to_dictionary())
     return power
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
