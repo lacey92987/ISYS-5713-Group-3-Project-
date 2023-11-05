@@ -4,8 +4,8 @@ import sqlite3
 from pathlib import Path
 
 # Define the path to the data folder
-source_folder = Path('Model/working_outputs_inputs')
-output_folder = Path('Model')
+source_folder = Path('GA _assignment_2/working_outputs_inputs')
+output_folder = Path('GA _assignment_2')
 
 # Set the output database filename
 db_filename = output_folder / 'database.db'
@@ -39,7 +39,7 @@ cur.execute("""
             , weight REAL
             , publisher TEXT
             , skin_color TEXT
-            , alignmnet TEXT
+            , alignment TEXT
             , PRIMARY KEY (hero_id)
             );
             """)
