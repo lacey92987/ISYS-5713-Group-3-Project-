@@ -323,7 +323,7 @@ def modify_hero(hero_id, data):
     publisher = data.get('publisher', '')
     skin_color = data.get('skin_color', '')
     alignment = data.get('alignment', '')
-    
+
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
 
@@ -378,11 +378,10 @@ def modify_hero(hero_id, data):
     conn.commit()
 
     # Now requery the database to get the updated hero
-    cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (hero_id,))
-    updated_hero = cur.fetchone()
+    updated_hero = select_hero(hero_id)
 
     if updated_hero is not None:
-        return {"message": "Hero updated successfully", "hero": updated_hero}, 200
+        return {"message": "Hero updated successfully", "hero": updated_hero.to_dictionary()}, 200
     else:
         return {"error": "Hero not found"}, 404
 
