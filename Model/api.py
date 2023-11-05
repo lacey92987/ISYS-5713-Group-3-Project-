@@ -10,6 +10,9 @@ CORS(app)
 DB_PATH = Path.cwd() / 'Model'
 DATABASE_FILE = DB_PATH / 'database.db'
 
+@app.route('/')
+def index():
+    return 'Hello, World!'
 ###
 # Classes
 ###
@@ -74,31 +77,17 @@ class Hero:
 # GET - at least one for every table (except mapping tables)
 
 # Get all (must have a filter) LIMIT
- GA3-Carson
+
 @app.route('/heroes', methods=['GET'])
 def get_heroes():
 
     limit = request.args.get('limit', 10)
 
-    heroes = select_all_heros(limit)
+    heroes = select_all_heroes(limit)
     return jsonify([hero.to_dictionary() for hero in heroes])
 
-def select_all_heros(limit):
-
-# @app.get(/heroes?limit=10)
-# def select_all_heroes():
-    
-#     print(DATABASE_FILE)
-#     conn = sqlite3.connect(DATABASE_FILE)
-#     cur = conn.cursor()
-#     # Get column names from the sales table
-#     cur.execute('SELECT * FROM heroes LIMIT 10')
-#     return cur.fetchall()
-    
-# @app.get(/powers?limit=10)
-# def select_all_powers():
-
-    
+def select_all_heroes(limit):
+     
     print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
@@ -120,17 +109,19 @@ def get_powers():
     return jsonify([power.to_dictionary() for power in powers])
 
 def select_all_powers(limit):
-    
-    print(DATABASE_FILE)
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    # Get column names from the sales table
-    cur.execute('SELECT * FROM powers LIMIT ?', (limit,))
-    results = cur.fetchall()
-    powers = []
-    for result in results:
-        power = Power(result[1], result[2], result[3], result[0])
-        powers.append(power)
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM powers LIMIT ?', (limit,))
+        results = cur.fetchall()
+        powers = []
+        for result in results:
+            power = Power(result[1], result[2], result[3], result[0])
+            powers.append(power)
+        return powers
+    except Exception as e:
+        print(f"Error in select_all_powers: {str(e)}")
+        return None
 
 # Get one by one
 @app.route('/heroes/<id>', methods = ['GET'])
@@ -163,7 +154,7 @@ def select_power(id):
     return power
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
- GA3-Carson
+
 
 @app.route('/heroes/<id>/powers', methods = ['GET'])
 def get_powers_by_hero(id):
