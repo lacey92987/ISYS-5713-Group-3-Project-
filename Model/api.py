@@ -18,7 +18,7 @@ def index():
 ###
 class Power:
     """Class to represent a power."""
-    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
+    def __init__(self, power_name, power_level, power_type, power_id):
         self.power_name = power_name
         self.power_level = power_level
         self.power_type = power_type
@@ -36,7 +36,7 @@ class Power:
 
 class Hero:
     """Class to represent a hero."""
-    def __init__(self, hero_name, gender=None, eye_color=None, species=None, hair_color=None, height=None, weight=None, publisher=None, skin_color=None, alignment=None, hero_id=None, powers=[]):
+    def __init__(self, hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color, alignment, hero_id, powers=[]):
         self.hero_name = hero_name
         self.gender = gender
         self.eye_color = eye_color
@@ -150,9 +150,12 @@ def select_power(id):
     # Get column names from the sales table
     cur.execute('SELECT * FROM powers WHERE power_id = ?', (id,))
     result = cur.fetchone()
-    power = Power(result[1], result[2], result[3], result[0])
-    return power
-
+    if result is not None:
+        power = Power(result[1], result[2], result[3], result[0])
+        return power
+    else:
+        # Handle the case where the power with the given ID is not found
+        return None
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
 
 
@@ -165,7 +168,7 @@ def select_powers_by_hero(hero_id):
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     cur.execute('''
-                SELECT p.power_name as "Name", p.power_level as "Level", p.power_type as "Type", p.power_id as "Id"
+                SELECT h.hero_name as "Hero", p.power_name as "Name", p.power_level as "Level", p.power_type as "Type", p.power_id as "Id"
                 FROM heroes AS h
                     JOIN heroes_powers AS hp ON h.hero_id = hp.hero_id
                     JOIN powers AS p ON hp.power_id = p.power_id
@@ -194,119 +197,128 @@ def select_powers_by_hero(hero_id):
 
 # POST - Create a new entity for your database (can be a single table or multiple tables)
 @app.route('/heroes', methods=['POST'])
-def post_hero():
-    pass
-
 def insert_hero():
+    data = request.get_json()
 
-    hero_name = heroes.get('HeroName','')
-    gender = heroes.get('Gender','')
-    eye_color = heroes.get('EyeColor','')
-    species = heroes.get('Species','')
-    hair_color = heroes.get('HairColor','')
-    height = heroes.get('Height','')
-    weight = heroes.get('Weight','')
-    publisher = heroes.get('Publisher','')
-    skin_color = heroes.get('SkinColor','')
-    alignment = heroes.get('Alignment','')
-    
-    if len(hero_name)==0:
-        return jsonify({"error": "Missing required fields, 'HeroName'"}), 400
+    # Extract hero data from the JSON data
+    hero_name = data.get('hero_name', '')
+    gender = data.get('gender', '')
+    eye_color = data.get('eye_color', '')
+    species = data.get('species', '')
+    hair_color = data.get('hair_color', '')
+    height = data.get('height', 0.0)
+    weight = data.get('weight', 0.0)
+    publisher = data.get('publisher', '')
+    skin_color = data.get('skin_color', '')
+    alignment = data.get('alignment', '')
+
+    if len(hero_name) == 0:
+        return {"error": "Missing required field 'hero_name'"}, 400
 
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
-    cur.execute('INSERT INTO heroes (HeroName, Gender, EyeColor, Species, HairColor, Height, Weight, Publisher, SkinColor, Alignment) VALUES (?,?,?,?,?,?,?,?,?,?)', 
-                (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color, alignment))
+    cur.execute('INSERT INTO heroes (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color) VALUES (?,?,?,?,?,?,?,?,?)',
+                (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color))
     conn.commit()
-    print(cur.lastrowid)
+    hero_id = cur.lastrowid
     conn.close()
-    return jsonify({"message": "Hero added successfully"}), 201
+
+    response = {"message": "Hero added successfully", "hero_id": hero_id}
+    return response, 201
+
+
+
 
 # PUT - Update an entity in your database
-@app.route('/heroes',methods=['PUT'])
-def put_hero():
-    pass
-
-def update_hero():
-
-    hero_id = int(heroes.get('HeroId',-1))
+@app.route('/heroes/<int:hero_id>', methods=['PUT'])
+def update_hero(heroes):
+    hero_id = int(heroes.get('hero_id', -1))
     if hero_id < 0:
-        return jsonify({"error": "Missing required fields, 'HeroId'"}), 400
-    
-    
-    # This gets a little difficult, but we want to update the customer with the new data
+        return jsonify({"error": "Missing required fields, 'hero_id'"}), 400
+
+    # This gets a little difficult, but we want to update the hero with the new data
     update_fields = []
     update_values = []
-    
-    if 'HeroName' in heores:
-        hero_name = heroes.get('HeroName','')
-        update_fields.append("HeroName=?")
+
+    if 'hero_name' in heroes:
+        hero_name = heroes.get('hero_name', '')
+        update_fields.append("hero_name=?")
         update_values.append(hero_name)
-    
-    if 'Gender' in heroes:
-        gender = heroes.get('Gender','')
-        update_fields.append("Gender=?")
+
+    if 'gender' in heroes:
+        gender = heroes.get('gender', '')
+        update_fields.append("gender=?")
         update_values.append(gender)
-    
-    if 'EyeColor' in heroes:
-        eye_color = heroes.get('EyeColor','')
-        update_fields.append("EyeColor=?")
+
+    if 'eye_color' in heroes:
+        eye_color = heroes.get('eye_color', '')
+        update_fields.append("eye_color=?")
         update_values.append(eye_color)
-    
-    if 'Species' in heores:
-        species = heores.get('Species','')
-        update_fields.append("Species=?")
+
+    if 'species' in heroes:
+        species = heroes.get('species', '')
+        update_fields.append("species=?")
         update_values.append(species)
 
-    if 'HairColor' in heroes:
-        hair_color = heroes.get('HairColor','')
-        update_fields.append("HairColor=?")
+    if 'hair_color' in heroes:
+        hair_color = heroes.get('hair_color', '')
+        update_fields.append("hair_color=?")
         update_values.append(hair_color)
-    
-    if 'Height' in heroes:
-        height = heroes.get('Height','')
-        update_fields.append("Height=?")
+
+    if 'height' in heroes:
+        height = heroes.get('height', '')
+        update_fields.append("height=?")
         update_values.append(height)
 
-    if 'Weight' in heroes:
-        weight = heroes.get('Weight','')
-        update_fields.append("Weight=?")
+    if 'weight' in heroes:
+        weight = heroes.get('weight', '')
+        update_fields.append("weight=?")
         update_values.append(weight)
-    
-    if 'Publisher' in heroes:
-        publisher = heroes.get('Publisher','')
-        update_fields.append("Publisher=?")
+
+    if 'publisher' in heroes:
+        publisher = heroes.get('publisher', '')
+        update_fields.append("publisher=?")
         update_values.append(publisher)
-    
-    if 'SkinColor' in heroes:
-        skin_color = heroes.get('SkinColor','')
-        update_fields.append("SkinColor=?")
+
+    if 'skin_color' in heroes:
+        skin_color = heroes.get('skin_color', '')
+        update_fields.append("skin_color=?")
         update_values.append(skin_color)
-    
-    if 'Alignment' in heroes:
-        alignment = heroes.get('Alignment','')
-        update_fields.append("Alignment=?")
+
+    if 'alignment' in heroes:
+        alignment = heroes.get('alignment', '')
+        update_fields.append("alignment=?")
         update_values.append(alignment)
-    
-    
+
     # Create the update statement
-    update_statement = f'UPDATE heroes SET {",".join(update_fields)} WHERE HeroId = ?'
+    update_statement = f'UPDATE heroes SET {",".join(update_fields)} WHERE hero_id = ?'
     update_values.append(hero_id)
-    
-    # Connect to the database and update the data   
+
+    # Connect to the database and update the data
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     cur.execute(update_statement, update_values)
     conn.commit()
-    
-    # Now requery the database to get the updated fields
-    cur.execute('SELECT * FROM heroes WHERE HeroId = ?', (hero_id,))
-    return cur.fetchone()
+
+    # Now requery the database to get the updated hero
+    cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (hero_id,))
+    updated_hero = cur.fetchone()
+
+    if updated_hero is not None:
+        return jsonify({"message": "Hero updated successfully", "hero": updated_hero})
+    else:
+        return jsonify({"error": "Hero not found"}, 404)
+
 
 # DELETE - Remove an entity from your database
 @app.route('/heroes/<int:id>', methods=['DELETE'])
 def delete_hero(id):
-    pass
+    result = remove_hero(id)
+    if result['success']:
+        return jsonify({"message": "Hero deleted successfully"})
+    else:
+        return jsonify({"error": "Hero not found"}, 404)
+
 
 def remove_hero(id):
    
