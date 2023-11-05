@@ -4,7 +4,8 @@ from flask import request
 from flask_cors import CORS
 import sqlite3
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import List
 
 app = Flask(__name__) 
 CORS(app)
@@ -37,21 +38,21 @@ class Power:
         }
         return power
 
+@dataclass
 class Hero:
     """Class to represent a hero."""
-    def __init__(self, hero_name, gender=None, eye_color=None, species=None, hair_color=None, height=None, weight=None, publisher=None, skin_color=None, alignment=None, hero_id=None, powers=[]):
-        self.hero_name = hero_name
-        self.gender = gender
-        self.eye_color = eye_color
-        self.species = species
-        self.hair_color = hair_color
-        self.height = height
-        self.weight = weight
-        self.publisher = publisher
-        self.skin_color = skin_color
-        self.alignment = alignment
-        self.hero_id = hero_id
-        self.powers = powers #List to contain power objects
+    hero_name: str
+    gender: str = None
+    eye_color: str = None
+    species: str = None
+    hair_color: str = None
+    height: float = None
+    weight: float = None
+    publisher: str = None
+    skin_color: str = None
+    alignment: str = None
+    hero_id: int = None
+    powers: List[Power] = field(default_factory=list)
     
     def to_dictionary(self):
         """Returns a dictionary representation of the hero"""
