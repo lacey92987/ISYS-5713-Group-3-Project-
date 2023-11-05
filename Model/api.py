@@ -4,6 +4,7 @@ from flask import request
 from flask_cors import CORS
 import sqlite3
 from pathlib import Path
+from dataclasses import dataclass
 
 app = Flask(__name__) 
 CORS(app)
@@ -18,13 +19,13 @@ ORIGINAL_DATABASE_FILE = ORIGINAL_DB_PATH / 'database.db'
 ###
 # Classes
 ###
+@dataclass
 class Power:
     """Class to represent a power."""
-    def __init__(self, power_name, power_level=0, power_type=None, power_id=None):
-        self.power_name = power_name
-        self.power_level = power_level
-        self.power_type = power_type
-        self.power_id = power_id
+    power_name: str
+    power_level: int = 0
+    power_type: str = None
+    power_id: int = None
     
     def to_dictionary(self):
         """Returns a dictionary representation of the power"""
