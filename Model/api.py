@@ -285,15 +285,15 @@ def insert_hero():
     weight = data.get('weight', 0.0)
     publisher = data.get('publisher', '')
     skin_color = data.get('skin_color', '')
-    #alignment = data.get('alignment', '')
+    alignment = data.get('alignment', '')
 
     if len(hero_name) == 0:
         return {"error": "Missing required field 'hero_name'"}, 400
 
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
-    cur.execute('INSERT INTO heroes (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color) VALUES (?,?,?,?,?,?,?,?,?)',
-                (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color))
+    cur.execute('INSERT INTO heroes (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color,alignment) VALUES (?,?,?,?,?,?,?,?,?,?)',
+                (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color, alignment))
     conn.commit()
     hero_id = cur.lastrowid
     conn.close()
