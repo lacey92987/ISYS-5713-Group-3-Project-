@@ -196,7 +196,9 @@ def select_all_powers(limit):
 @app.route('/heroes/<id>', methods = ['GET'])
 def get_hero(id):
     hero = select_hero(id)
-    return jsonify(hero.to_dictionary())
+    if hero is None:
+        return jsonify({"error": "Hero not found"}), 404
+    return jsonify(hero.to_dictionary()), 200
 
 def select_hero(id):
     print(DATABASE_FILE)
@@ -205,6 +207,8 @@ def select_hero(id):
     cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (id,))
     result = cur.fetchone()
     print(result)
+    if result is None:
+        return None
     hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
     print(hero.to_dictionary())
     return hero
@@ -212,7 +216,9 @@ def select_hero(id):
 @app.route('/powers/<id>', methods = ['GET'])
 def get_power(id):
     power = select_power(id)
-    return jsonify(power.to_dictionary())
+    if power is None:
+        return jsonify({"error": "Power not found"}), 404
+    return jsonify(power.to_dictionary()), 200
 
 def select_power(id):
     print(DATABASE_FILE)
@@ -222,6 +228,8 @@ def select_power(id):
     cur.execute('SELECT * FROM powers WHERE power_id = ?', (id,))
     result = cur.fetchone()
     print(result)
+    if result is None:
+        return None
     power = Power(result[1], result[2], result[3], result[0])
     print(power.to_dictionary())
     return power
