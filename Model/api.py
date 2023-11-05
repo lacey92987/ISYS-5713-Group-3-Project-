@@ -210,7 +210,7 @@ def insert_hero():
     weight = data.get('weight', 0.0)
     publisher = data.get('publisher', '')
     skin_color = data.get('skin_color', '')
-    alignment = data.get('alignment', '')
+    #alignment = data.get('alignment', '')
 
     if len(hero_name) == 0:
         return {"error": "Missing required field 'hero_name'"}, 400
@@ -231,62 +231,70 @@ def insert_hero():
 
 # PUT - Update an entity in your database
 @app.route('/heroes/<int:hero_id>', methods=['PUT'])
-def update_hero(heroes):
-    hero_id = int(heroes.get('hero_id', -1))
-    if hero_id < 0:
-        return jsonify({"error": "Missing required fields, 'hero_id'"}), 400
+def update_hero(hero_id):
+    data = request.get_json()
+    response, status_code = modify_hero(hero_id, data)
+    return jsonify(response), status_code
 
-    # This gets a little difficult, but we want to update the hero with the new data
+def modify_hero(hero_id, data):
+    # Extract hero data from the JSON data
+    hero_name = data.get('hero_name', '')
+    gender = data.get('gender', '')
+    eye_color = data.get('eye_color', '')
+    species = data.get('species', '')
+    hair_color = data.get('hair_color', '')
+    height = data.get('height', 0.0)
+    weight = data.get('weight', 0.0)
+    publisher = data.get('publisher', '')
+    skin_color = data.get('skin_color', '')
+    alignment = data.get('alignment', '')
+
+    if len(hero_name) == 0:
+        return {"error": "Missing required field 'hero_name'"}, 400
+
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+
     update_fields = []
     update_values = []
 
-    if 'hero_name' in heroes:
-        hero_name = heroes.get('hero_name', '')
+    if 'hero_name' in data:
         update_fields.append("hero_name=?")
         update_values.append(hero_name)
 
-    if 'gender' in heroes:
-        gender = heroes.get('gender', '')
+    if 'gender' in data:
         update_fields.append("gender=?")
         update_values.append(gender)
 
-    if 'eye_color' in heroes:
-        eye_color = heroes.get('eye_color', '')
+    if 'eye_color' in data:
         update_fields.append("eye_color=?")
         update_values.append(eye_color)
 
-    if 'species' in heroes:
-        species = heroes.get('species', '')
+    if 'species' in data:
         update_fields.append("species=?")
         update_values.append(species)
 
-    if 'hair_color' in heroes:
-        hair_color = heroes.get('hair_color', '')
+    if 'hair_color' in data:
         update_fields.append("hair_color=?")
         update_values.append(hair_color)
 
-    if 'height' in heroes:
-        height = heroes.get('height', '')
+    if 'height' in data:
         update_fields.append("height=?")
         update_values.append(height)
 
-    if 'weight' in heroes:
-        weight = heroes.get('weight', '')
+    if 'weight' in data:
         update_fields.append("weight=?")
         update_values.append(weight)
 
-    if 'publisher' in heroes:
-        publisher = heroes.get('publisher', '')
+    if 'publisher' in data:
         update_fields.append("publisher=?")
         update_values.append(publisher)
 
-    if 'skin_color' in heroes:
-        skin_color = heroes.get('skin_color', '')
+    if 'skin_color' in data:
         update_fields.append("skin_color=?")
         update_values.append(skin_color)
 
-    if 'alignment' in heroes:
-        alignment = heroes.get('alignment', '')
+    if 'alignment' in data:
         update_fields.append("alignment=?")
         update_values.append(alignment)
 
@@ -294,9 +302,6 @@ def update_hero(heroes):
     update_statement = f'UPDATE heroes SET {",".join(update_fields)} WHERE hero_id = ?'
     update_values.append(hero_id)
 
-    # Connect to the database and update the data
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
     cur.execute(update_statement, update_values)
     conn.commit()
 
@@ -305,9 +310,11 @@ def update_hero(heroes):
     updated_hero = cur.fetchone()
 
     if updated_hero is not None:
-        return jsonify({"message": "Hero updated successfully", "hero": updated_hero})
+        return {"message": "Hero updated successfully", "hero": updated_hero}, 200
     else:
-        return jsonify({"error": "Hero not found"}, 404)
+        return {"error": "Hero not found"}, 404
+
+
 
 
 # DELETE - Remove an entity from your database
@@ -324,7 +331,7 @@ def remove_hero(id):
    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
-    cur.execute('DELETE FROM heroes WHERE HeroId = ?', (id,))
+    cur.execute('DELETE FROM heroes WHERE hero_id = ?', (id,))
     conn.commit()
     return {'success':True}
 
