@@ -323,10 +323,7 @@ def modify_hero(hero_id, data):
     publisher = data.get('publisher', '')
     skin_color = data.get('skin_color', '')
     alignment = data.get('alignment', '')
-
-    if len(hero_name) == 0:
-        return {"error": "Missing required field 'hero_name'"}, 400
-
+    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
 
