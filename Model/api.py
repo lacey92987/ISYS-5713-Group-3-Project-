@@ -139,12 +139,14 @@ def get_hero(id):
     return jsonify(hero.to_dictionary())
 
 def select_hero(id):
-   
+    print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (id,))
     result = cur.fetchone()
+    print(result)
     hero = Hero(result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[0])
+    print(hero.to_dictionary())
     return hero
 
 @app.route('/powers/<id>', methods = ['GET'])
@@ -153,13 +155,15 @@ def get_power(id):
     return jsonify(power.to_dictionary())
 
 def select_power(id):
-    
+    print(DATABASE_FILE)
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
     # Get column names from the sales table
     cur.execute('SELECT * FROM powers WHERE power_id = ?', (id,))
     result = cur.fetchone()
+    print(result)
     power = Power(result[1], result[2], result[3], result[0])
+    print(power.to_dictionary())
     return power
 
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
