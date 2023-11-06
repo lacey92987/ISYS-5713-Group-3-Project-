@@ -181,7 +181,7 @@ def select_all_powers(limit):
         results = cur.fetchall()
         powers = []
         for result in results:
-            power = Power(result[1], result[2], result[3], result[0])
+            power = Power(result[1], result[3], result[2], result[0])
             powers.append(power)
         return powers
     except Exception as e:
@@ -227,7 +227,7 @@ def select_power(id):
     # Handle the case where the power with the given ID is not found
     if result is None:
         return None
-    power = Power(result[1], result[2], result[3], result[0])
+    power = Power(result[1], result[3], result[2], result[0])
     print(power.to_dictionary())
     return power
 
