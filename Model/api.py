@@ -4,7 +4,7 @@ from flask import request
 from flask_cors import CORS
 import sqlite3
 from pathlib import Path
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List
 
 app = Flask(__name__) 
@@ -36,13 +36,7 @@ class Power:
     
     def to_dictionary(self):
         """Returns a dictionary representation of the power"""
-        power = {
-            "power_name": self.power_name,
-            "power_level": self.power_level,
-            "power_type": self.power_type,
-            "power_id": self.power_id
-        }
-        return power
+        return asdict(self)
 
 @dataclass
 class Hero:
@@ -60,23 +54,14 @@ class Hero:
     hero_id: int = None
     powers: List[Power] = field(default_factory=list)
     
-    def to_dictionary(self):
+    def to_dictionary(self, include_powers=False):
         """Returns a dictionary representation of the hero"""
-        hero = {
-            "hero_name": self.hero_name,
-            "gender": self.gender,
-            "eye_color": self.eye_color,
-            "species": self.species,
-            "hair_color": self.hair_color,
-            "height": self.height,
-            "weight": self.weight,
-            "publisher": self.publisher,
-            "skin_color": self.skin_color,
-            "alignment": self.alignment,
-            "hero_id": self.hero_id,
-            "powers": [power.to_dictionary() for power in self.powers]
-        }
-        return hero
+        hero_dict = asdict(self)
+        if not include_powers:
+            hero_dict.pop('powers')
+        else:
+            hero_dict['powers'] = [power.to_dictionary() for power in self.powers]
+        return hero_dict
 
     
 
@@ -181,7 +166,7 @@ def select_all_powers(limit):
         results = cur.fetchall()
         powers = []
         for result in results:
-            power = Power(result[1], result[2], result[3], result[0])
+            power = Power(result[1], result[3], result[2], result[0])
             powers.append(power)
         return powers
     except Exception as e:
@@ -227,7 +212,7 @@ def select_power(id):
     # Handle the case where the power with the given ID is not found
     if result is None:
         return None
-    power = Power(result[1], result[2], result[3], result[0])
+    power = Power(result[1], result[3], result[2], result[0])
     print(power.to_dictionary())
     return power
 
@@ -253,7 +238,7 @@ def select_powers_by_hero(hero_id):
     results = cur.fetchall()
     powers = []
     for result in results:
-        power = Power(result[0], result[1], result[2], result[3])
+        power = Power(result[1], result[2], result[3], result[4])
         powers.append(power)
     return powers
 
@@ -324,9 +309,6 @@ def modify_hero(hero_id, data):
     skin_color = data.get('skin_color', '')
     alignment = data.get('alignment', '')
 
-    if len(hero_name) == 0:
-        return {"error": "Missing required field 'hero_name'"}, 400
-
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
 
@@ -381,11 +363,10 @@ def modify_hero(hero_id, data):
     conn.commit()
 
     # Now requery the database to get the updated hero
-    cur.execute('SELECT * FROM heroes WHERE hero_id = ?', (hero_id,))
-    updated_hero = cur.fetchone()
+    updated_hero = select_hero(hero_id)
 
     if updated_hero is not None:
-        return {"message": "Hero updated successfully", "hero": updated_hero}, 200
+        return {"message": "Hero updated successfully", "hero": updated_hero.to_dictionary()}, 200
     else:
         return {"error": "Hero not found"}, 404
 
@@ -397,9 +378,9 @@ def modify_hero(hero_id, data):
 def delete_hero(id):
     result = remove_hero(id)
     if result['success']:
-        return jsonify({"message": "Hero deleted successfully"})
+        return jsonify({"message": "Hero deleted successfully"}), 200
     else:
-        return jsonify({"error": "Hero not found"}, 404)
+        return jsonify({"error": "Hero not found"}), 404
 
 
 def remove_hero(id):
