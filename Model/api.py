@@ -393,9 +393,9 @@ def modify_hero(hero_id, data):
 def delete_hero(id):
     result = remove_hero(id)
     if result['success']:
-        return jsonify({"message": "Hero deleted successfully"})
+        return jsonify({"message": "Hero deleted successfully"}), 200
     else:
-        return jsonify({"error": "Hero not found"}, 404)
+        return jsonify({"error": "Hero not found"}), 404
 
 
 def remove_hero(id):
