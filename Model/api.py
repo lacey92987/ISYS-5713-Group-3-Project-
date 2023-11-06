@@ -219,28 +219,42 @@ def select_power(id):
 # Get that spans multiple tables (Heroes/powers/heroes_powers)
 
 
-@app.route('/heroes/<id>/powers', methods = ['GET'])
-def get_powers_by_hero(id):
-    powers = select_powers_by_hero(id)
-    return jsonify([power.to_dictionary() for power in powers])
+@app.route('/heroes/<id>/powers', methods=['GET'])
+def get_hero_powers(id):
+    hero_name, powers = select_hero_powers(id)
+    return jsonify({
+        "hero_name": hero_name,
+        "powers": [power.to_dictionary() for power in powers]
+    })
 
-def select_powers_by_hero(hero_id):
+def select_hero_powers(hero_id):
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
+    cur.execute('SELECT hero_name FROM heroes WHERE hero_id = ?', (hero_id,))
+    hero_result = cur.fetchone()
+
+    if hero_result:
+        hero_name = hero_result[0]
+    else:
+        return "Hero not found", []
+
     cur.execute('''
-                SELECT h.hero_name as "Hero", p.power_name as "Name", p.power_level as "Level", p.power_type as "Type", p.power_id as "Id"
+                SELECT p.power_name, p.power_level, p.power_type, p.power_id
                 FROM heroes AS h
-                    JOIN heroes_powers AS hp ON h.hero_id = hp.hero_id
-                    JOIN powers AS p ON hp.power_id = p.power_id
+                JOIN heroes_powers AS hp ON h.hero_id = hp.hero_id
+                JOIN powers AS p ON hp.power_id = p.power_id
                 WHERE h.hero_id = ?
                 ''',
                 (hero_id,))
-    results = cur.fetchall()
+    power_results = cur.fetchall()
     powers = []
-    for result in results:
-        power = Power(result[1], result[2], result[3], result[4])
+
+    for result in power_results:
+        power = Power(result[0], result[1], result[2], result[3])
         powers.append(power)
-    return powers
+
+    return hero_name, powers
+
 
 # @app.get(/heroes{id}powers)
 # def select_heroes_powers:
