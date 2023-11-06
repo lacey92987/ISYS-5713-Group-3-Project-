@@ -1,6 +1,328 @@
-# ISYS 5713 Group 3 Project 
- ISYS 5713 Group 3 Project 
- An applicatio that will allow users to look up superheros and see the powers and power levels asscoaited with them, compare superheroes powers and allow uusers to create their own superheros
+# "Who Would Win in a Fight?"
+*ISYS 5713 Group 3 Project - Fall 2023*  
+An application that will allow users to look up superheroes and see the powers and power levels associated with them, compare superheroes powers and allow users to create their own superheroes.
+
+#### Table of Contents
+1. [Configuration](#configuration)  
+1. [API Endpoints](#api-endpoints)
+    - Configuration Endpoints
+        - [`/config/reset_database`: Reset the database](#configreset_database)
+    - Data Endpoints
+        - `/heroes`  
+        [Get all heroes](#heroes)  
+        [Create a new hero](#post_hero)  
+        - `heroes/{id}`  
+        [Return a hero by id](#heroesid)  
+        [Update a hero](#put_hero)  
+        [Delete a hero](#delete_hero)
+        - `powers`  
+        [Get all powers](#powers)
+        - `powers/{id}`  
+        [Get a power by id](#powersid)  
+        - `heroes/{id}/powers`  
+        [Get powers for a hero by id](#heroesidpowers)
+1. [Data Information](#data-information)
+
+# Configuration
+#### Backend configuration
+- Requires Python 3.x
+- After copying files to your directory, set up your python environment: `pip install requirements.txt`
+- The API runs from the `api.py` file.
+
+#### Frontend configuration
+- As this API is not currently hosted on any public server, you will need to run it in your own environment or elsewhere in order to use it. (Refer to backend configuration instructions above.)
+- In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed.
+
+# API Endpoints
+The API supports the following endpoints:
+
+## Configuration Endpoints
+
+### `/config/reset_database`
+
+|METHOD|`PUT`|
+|---|---|
+|**Description**|Resets the database to the original data.|
+|**Parameters / Body**|-|
+
+#### Example Request
+http://localhost:5000/config/reset_database
+
+#### Example Response
+```json
+{
+    "message": "The database was successfully reset to the original state."
+}
+```
+```json
+{
+    "error": "An error occurred while resetting the database. The database has not been reset."
+}
+```
+
+## Data Endpoints
+
+### `/heroes`
+
+<span id="get_heroes"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Returns all heroes.|
+|**Parameters**|`limit` *(optional)* - limit number of heroes returned (defaults to 10)|
+
+#### Example Request
+http://localhost:5000/config/heroes?limit=2
+
+#### Example Response
+```json
+[
+    {
+        "alignment": "good",
+        "eye_color": "yellow",
+        "gender": "Male",
+        "hair_color": "No Hair",
+        "height": 203.0,
+        "hero_id": 1,
+        "hero_name": "A-Bomb",
+        "publisher": "Marvel Comics",
+        "skin_color": "",
+        "species": "Human",
+        "weight": 441.0
+    },
+    {
+        "alignment": "good",
+        "eye_color": "blue",
+        "gender": "Male",
+        "hair_color": "No Hair",
+        "height": 191.0,
+        "hero_id": 2,
+        "hero_name": "Abe Sapien",
+        "publisher": "Dark Horse Comics",
+        "skin_color": "blue",
+        "species": "Icthyo Sapien",
+        "weight": 65.0
+    }
+]
+```
+
+<span id="post_hero"></span>
+
+|METHOD|`POST`|
+|---|---|
+|**Description**|Creates a new hero. Returns hero_id if successful.|
+|**Body**|Takes a json object with attributes: `hero_name` ***(required)***, `gender`, `eye_color`, `species`, `hair_color`, `height`, `weight`, `publisher`, `skin_color`, `alignment`|
+
+#### Example Request & Body
+http://localhost:5000/heroes
+
+```json
+{
+    "hero_name": "Spider-Man",
+    "gender": "Male",
+    "eye_color": "Hazel",
+    "species": "Human",
+    "hair_color": "Brown",
+    "height": 178.0,
+    "weight": 76.0,
+    "publisher": "Marvel Comics",
+    "skin_color": "Fair",
+    "alignment": "Good"
+}
+```
+
+#### Example Response
+```json
+{
+    "hero_id": 735,
+    "message": "Hero added successfully"
+}
+```
+
+-----------------
+### `/heroes/{id}`
+
+<span id="get_hero"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Returns a specific hero by id.|
+|**Parameters / Body**|-|
+
+#### Example Request
+http://localhost:5000/heroes/36
+
+#### Example Response
+```json
+{
+    "alignment": "good",
+    "eye_color": "blue",
+    "gender": "Male",
+    "hair_color": "Blond",
+    "height": -99.0,
+    "hero_id": 36,
+    "hero_name": "Aquababy",
+    "publisher": "DC Comics",
+    "skin_color": "",
+    "species": "",
+    "weight": -99.0
+}
+```
+
+<span id="put_hero"></span>
+
+|METHOD|`PUT`|
+|---|---|
+|**Description**|Modifies the attributes of a hero by id. Returns updated hero details if successful.|
+|**Body**|Takes a json object with attributes: `hero_name`, `gender`, `eye_color`, `species`, `hair_color`, `height`, `weight`, `publisher`, `skin_color`, `alignment`|
+
+#### Example Request & Body
+http://localhost:5000/heroes/735
+
+```json
+{
+    "height": 30,
+    "species": "Atlantean-Alien"
+}
+```
+
+### Example Response
+```json
+{
+    "hero": {
+        "alignment": "good",
+        "eye_color": "blue",
+        "gender": "Male",
+        "hair_color": "Blond",
+        "height": 30.0,
+        "hero_id": 36,
+        "hero_name": "Aquababy",
+        "publisher": "DC Comics",
+        "skin_color": "",
+        "species": "Atlantean-Alien",
+        "weight": -99.0
+    },
+    "message": "Hero updated successfully"
+}
+```
+
+<span id="delete_hero"></span>
+
+|METHOD|`DELETE`|
+|---|---|
+|**Description**|Deletes a hero by id.|
+|**Parameters**|-|
+
+#### Example Request
+http://localhost:5000/heroes/735
+
+#### Example Response
+```json
+{
+    "message": "Hero deleted successfully"
+}
+```
+
+-----------------
+### `/powers`
+
+<span id="get_powers"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Returns all powers.|
+|**Parameters**|`limit` *(optional)* - limit number of heroes returned (defaults to 10)|
+
+#### Example Request
+http://localhost:5000/powers
+
+#### Example Response
+```json
+[
+    {
+        "power_id": 1,
+        "power_level": 7,
+        "power_name": "Agility",
+        "power_type": "Physical Enhancements"
+    },
+    {
+        "power_id": 2,
+        "power_level": 6,
+        "power_name": "Accelerated Healing",
+        "power_type": "Physical Enhancements"
+    },
+    ...
+    {
+        "power_id": 10,
+        "power_level": 8,
+        "power_name": "Danger Sense",
+        "power_type": "Sensory/Perception Powers"
+    }
+]
+```
+
+-----------------
+### `/powers/{id}`
+
+<span id="get_power"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Get a power by id.|
+|**Parameters / Body**|-|
+
+#### Example Request
+http://localhost:5000/powers/2
+
+#### Example Response
+```json
+{
+    "power_id": 2,
+    "power_level": "Physical Enhancements",
+    "power_name": "Accelerated Healing",
+    "power_type": 6
+}
+```
+
+-----------------
+### `/heroes/{id}/powers`
+
+
+<span id="get_hero_powers"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Returns the list of powers for the specified hero.|
+|**Parameters / Body**|-|
+
+#### Example Request & Body
+http://localhost:5000/heroes/36/powers
+
+#### Example Response
+```json
+[
+    {
+        "power_id": 11,
+        "power_level": 7,
+        "power_name": "Underwater breathing",
+        "power_type": "Stealth and Survival Powers"
+    },
+    {
+        "power_id": 18,
+        "power_level": 9,
+        "power_name": "Super Strength",
+        "power_type": "Physical Enhancements"
+    },
+    {
+        "power_id": 117,
+        "power_level": 4,
+        "power_name": "Water Control",
+        "power_type": "Energy Manipulation"
+    }
+]
+```
+
+# Data Information
 
 ## Entity Diagram
 ![EntityDiagram](EntityDiagram.png)
