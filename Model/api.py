@@ -4,7 +4,7 @@ from flask import request
 from flask_cors import CORS
 import sqlite3
 from pathlib import Path
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List
 
 app = Flask(__name__) 
@@ -36,13 +36,7 @@ class Power:
     
     def to_dictionary(self):
         """Returns a dictionary representation of the power"""
-        power = {
-            "power_name": self.power_name,
-            "power_level": self.power_level,
-            "power_type": self.power_type,
-            "power_id": self.power_id
-        }
-        return power
+        return asdict(self)
 
 @dataclass
 class Hero:
@@ -60,23 +54,14 @@ class Hero:
     hero_id: int = None
     powers: List[Power] = field(default_factory=list)
     
-    def to_dictionary(self):
+    def to_dictionary(self, include_powers=False):
         """Returns a dictionary representation of the hero"""
-        hero = {
-            "hero_name": self.hero_name,
-            "gender": self.gender,
-            "eye_color": self.eye_color,
-            "species": self.species,
-            "hair_color": self.hair_color,
-            "height": self.height,
-            "weight": self.weight,
-            "publisher": self.publisher,
-            "skin_color": self.skin_color,
-            "alignment": self.alignment,
-            "hero_id": self.hero_id,
-            "powers": [power.to_dictionary() for power in self.powers]
-        }
-        return hero
+        hero_dict = asdict(self)
+        if not include_powers:
+            hero_dict.pop('powers')
+        else:
+            hero_dict['powers'] = [power.to_dictionary() for power in self.powers]
+        return hero_dict
 
     
 
