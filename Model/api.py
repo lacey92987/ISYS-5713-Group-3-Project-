@@ -253,7 +253,7 @@ def select_powers_by_hero(hero_id):
     results = cur.fetchall()
     powers = []
     for result in results:
-        power = Power(result[0], result[1], result[2], result[3])
+        power = Power(result[1], result[2], result[3], result[4])
         powers.append(power)
     return powers
 
