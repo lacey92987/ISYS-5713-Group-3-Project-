@@ -1,8 +1,13 @@
+"""
+Contains configuration functions for the database.
+If this file is run directly, it will create the database schema and load the data.
+"""
+
 import sqlite3
 from controller import *
 
 ###
-# Functions
+# Database Configuration Functions
 ###
 
 def create_database_schema():

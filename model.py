@@ -1,3 +1,7 @@
+"""
+Contains classes and functions to interact with the database and format data responses.
+"""
+
 from flask import jsonify
 import sqlite3
 from dataclasses import dataclass, field, asdict
