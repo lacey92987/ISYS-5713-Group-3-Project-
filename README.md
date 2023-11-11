@@ -325,7 +325,7 @@ http://localhost:5000/heroes/36/powers
 # Data Information
 
 ## Entity Diagram
-![EntityDiagram](EntityDiagram.png)
+![EntityDiagram](static/EntityDiagram.png)
 
 ## Data Dictionary
 
