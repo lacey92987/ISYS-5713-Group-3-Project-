@@ -8,7 +8,7 @@ from controller import *
 def create_database_schema():
     """Function to create the database file and schema."""
 
-    with sqlite3.connect(DB_FILENAME) as conn:
+    with sqlite3.connect(DATABASE_FILE) as conn:
         
         cur = conn.cursor()
 
@@ -63,7 +63,7 @@ def create_database_schema():
 def load_data():
     """Function to load data into the database."""
 
-    with sqlite3.connect(DB_FILENAME) as conn:
+    with sqlite3.connect(DATABASE_FILE) as conn:
 
         cur = conn.cursor()
 

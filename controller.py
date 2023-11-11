@@ -8,7 +8,7 @@ from pathlib import Path
 DATA_FOLDER = Path('data')
 
 # Set the output database filename
-DB_FILENAME = DATA_FOLDER / 'database.db'
+DATABASE_FILE = DATA_FOLDER / 'database.db'
 
 HEROES_FILENAME = DATA_FOLDER / 'heroes.csv'
 POWERS_FILENAME = DATA_FOLDER / 'powers.csv'
