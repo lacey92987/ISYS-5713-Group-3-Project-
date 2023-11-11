@@ -7,6 +7,8 @@ from pathlib import Path
 from dataclasses import dataclass, field, asdict
 from typing import List
 
+from controller import DATABASE_FILE
+
 app = Flask(__name__) 
 CORS(app)
 DB_PATH = Path.cwd() / 'Model'
