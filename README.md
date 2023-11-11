@@ -43,7 +43,7 @@ The API supports the following endpoints:
 |METHOD|`PUT`|
 |---|---|
 |**Description**|Resets the database to the original data.|
-|**Parameters / Body**|-|
+|**Parameters**|`reset_schema` *(optional)* - if True, the database schema will be recreated; if False, only the data contents will be reset. Default value is False.|
 
 #### Example Request
 http://localhost:5000/config/reset_database
