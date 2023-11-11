@@ -8,16 +8,10 @@ from dataclasses import dataclass, field, asdict
 from typing import List
 
 from controller import DATABASE_FILE
+from config import create_database_schema, load_data
 
 app = Flask(__name__) 
 CORS(app)
-DB_PATH = Path.cwd() / 'Model'
-DATABASE_FILE = DB_PATH / 'database.db'
-
-
-# Original database file used in reset_database()
-ORIGINAL_DB_PATH = Path.cwd() / 'GA _assignment_2'
-ORIGINAL_DATABASE_FILE = ORIGINAL_DB_PATH / 'database.db'
 
 
 
@@ -74,51 +68,40 @@ class Hero:
 @app.route('/config/reset_database', methods=['PUT'])
 def reset_database():
     """
-    Resets the database to the original data by copying the original database file.
+    Resets the database to the original data using clean csv files.
     The function will only execute if the whole process is successful, so the database will not be left in a broken state.
     Otherwise, an error will be returned and the database will not be changed.
 
-    The original database file is specified in the ORIGINAL_DATABASE_FILE variable.
+    Note, by default, resets the contents but does not reset the schema. (I.e. the tables are not dropped and recreated.)
+    To recreate the schema, pass the reset_schema parameter as True.
 
-    Note, resets the contents but does not reset the schema. (I.e. the tables are not dropped and recreated.)
     Note, this does not check whether the database is already in the original state.
         (I.e. a success message does not necessarily mean there were any changes to reset.)
     """
-    # If the ORIGINAL_DATABASE_FILE does not exist, return an error and stop the function
-    if not ORIGINAL_DATABASE_FILE.is_file():
-        return jsonify({"error": "The original database file does not exist at the expected path. The database has not been reset."}), 500
     
-    # Uses the try keyword to ensure 
+    reset_schema = request.args.get('reset_schema', False)
+
+    # Uses the try keyword to ensure the database is not left in a broken state
     try:
-        # Clear the database
-        conn = sqlite3.connect(DATABASE_FILE)
-        cur = conn.cursor()
-        cur.execute('DELETE FROM heroes_powers')
-        cur.execute('DELETE FROM heroes')
-        cur.execute('DELETE FROM powers')
-        conn.commit()
-        conn.close()
 
-        # Copy the original database file
-        conn = sqlite3.connect(ORIGINAL_DATABASE_FILE)
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM heroes')
-        heroes = cur.fetchall()
-        cur.execute('SELECT * FROM powers')
-        powers = cur.fetchall()
-        cur.execute('SELECT * FROM heroes_powers')
-        heroes_powers = cur.fetchall()
-        conn.close()
+        # If the DATABASE_FILE does not exist or the reset_schema parameter is True, run the create_database_schema() function to [re]create it
+        if reset_schema == True or not DATABASE_FILE.is_file():
+            try:
+                create_database_schema()
+            except Exception as e:
+                print("An error occurred while resetting the database schema. The database has not been reset.")
+                print(e)
+                raise e
 
-        # Insert the original data into the database
-        conn = sqlite3.connect(DATABASE_FILE)
-        cur = conn.cursor()
-        cur.executemany('INSERT INTO heroes VALUES (?,?,?,?,?,?,?,?,?,?,?)', heroes)
-        cur.executemany('INSERT INTO powers VALUES (?,?,?,?)', powers)
-        cur.executemany('INSERT INTO heroes_powers VALUES (?,?)', heroes_powers)
-        conn.commit()
-        conn.close()
-
+        # Clear the database and insert the original data
+        try:
+            load_data()
+        except Exception as e:
+            print("An error occurred while resetting the database contents. The database has not been reset.")
+            print(e)
+            raise e
+        
+        # If the database was successfully reset, return a success message
         return jsonify({"message": "The database was successfully reset to the original state."}), 200
 
     except Exception as e:
