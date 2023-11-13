@@ -3,6 +3,7 @@
 An application that will allow users to look up superheroes and see the powers and power levels associated with them, compare superheroes powers and allow users to create their own superheroes.
 
 #### Table of Contents
+1. [Frontend Interface](#frontend-interface)
 1. [Configuration](#configuration)  
 1. [API Endpoints](#api-endpoints)
     - Configuration Endpoints
@@ -22,6 +23,9 @@ An application that will allow users to look up superheroes and see the powers a
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
 1. [Data Information](#data-information)
+
+# Frontend Interface
+*Details on our frontend interface, once created, will be housed here.*
 
 # Configuration
 #### Backend configuration
