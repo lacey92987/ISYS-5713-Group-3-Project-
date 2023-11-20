@@ -3,6 +3,7 @@
 An application that will allow users to look up superheroes and see the powers and power levels associated with them, compare superheroes powers and allow users to create their own superheroes.
 
 #### Table of Contents
+1. [Frontend Interface](#frontend-interface)
 1. [Configuration](#configuration)  
 1. [API Endpoints](#api-endpoints)
     - Configuration Endpoints
@@ -22,6 +23,9 @@ An application that will allow users to look up superheroes and see the powers a
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
 1. [Data Information](#data-information)
+
+# Frontend Interface
+*Details on our frontend interface, once created, will be housed here.*
 
 # Configuration
 #### Backend configuration
@@ -43,7 +47,7 @@ The API supports the following endpoints:
 |METHOD|`PUT`|
 |---|---|
 |**Description**|Resets the database to the original data.|
-|**Parameters / Body**|-|
+|**Parameters**|`reset_schema` *(optional)* - if True, the database schema will be recreated; if False, only the data contents will be reset. Default value is False.|
 
 #### Example Request
 http://localhost:5000/config/reset_database
@@ -325,7 +329,7 @@ http://localhost:5000/heroes/36/powers
 # Data Information
 
 ## Entity Diagram
-![EntityDiagram](EntityDiagram.png)
+![EntityDiagram](static/EntityDiagram.png)
 
 ## Data Dictionary
 
