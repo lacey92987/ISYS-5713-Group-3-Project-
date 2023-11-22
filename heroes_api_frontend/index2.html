@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Superhero Database</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Superhero Database</h1>
+
+    <h2>Heroes</h2>
+    <ul id="heroes-list">
+        <!-- Hero items will be inserted here -->
+    </ul>
+
+    <h2>Compare Powers</h2>
+    <label for="hero1">Select Hero 1: </label>
+    <select id="hero1">
+        <!-- Hero options will be inserted here -->
+    </select>
+
+    <label for="hero2">Select Hero 2: </label>
+    <select id="hero2">
+        <!-- Hero options will be inserted here -->
+    </select>
+
+    <!-- Display hero information here -->
+    <div id="hero-info">
+        <!-- Hero information will be displayed here -->
+    </div>
+
+    <button id="compare-button">Compare Powers</button>
+
+    <div id="comparison-result">
+        <!-- Comparison result will be displayed here -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Define the API endpoint URLs
+        const apiBaseUrl = 'http://localhost:5000';  // Replace with your API URL
+
+        // Function to fetch and display heroes
+        function fetchHeroes() {
+            fetch(`${apiBaseUrl}/heroes`)
+                .then(response => response.json())
+                .then(heroes => {
+                    const heroesList = document.getElementById('heroes-list');
+                    heroesList.innerHTML = '';  // Clear the existing list
+
+                    heroes.forEach(hero => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = hero.hero_name;
+                        heroesList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching heroes:', error));
+        }
+
+        // Function to fetch hero information and display it when selected
+        function fetchHeroInformation(heroId) {
+            fetch(`${apiBaseUrl}/heroes/${heroId}`)
+                .then(response => response.json())
+                .then(hero => {
+                    const heroInfo = document.getElementById('hero-info');
+                    heroInfo.innerHTML = '';  // Clear existing information
+
+                    // Create a hero info list
+                    const infoList = document.createElement('ul');
+                    for (const key in hero) {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${key}: ${hero[key]}`;
+                        infoList.appendChild(listItem);
+                    }
+                    heroInfo.appendChild(infoList);
+                })
+                .catch(error => console.error('Error fetching hero information:', error));
+        }
+
+        // Function to compare powers of two heroes
+        function comparePowers() {
+            const hero1Id = document.getElementById('hero1').value;
+            const hero2Id = document.getElementById('hero2').value;
+
+            if (hero1Id === '' || hero2Id === '') {
+                alert('Please select both heroes to compare.');
+                return;
+            }
+
+            fetch(`${apiBaseUrl}/compare_power?hero_id1=${hero1Id}&hero_id2=${hero2Id}`)
+                .then(response => response.json())
+                .then(result => {
+                    const comparisonResult = document.getElementById('comparison-result');
+                    comparisonResult.textContent = `Winner: ${result.winner}`;
+                })
+                .catch(error => console.error('Error comparing powers:', error));
+        }
+
+        // Fetch and display heroes when the page loads
+        fetchHeroes();
+
+        // Add event listeners for the "Compare Powers" button and hero dropdowns
+        const compareButton = document.getElementById('compare-button');
+        compareButton.addEventListener('click', comparePowers);
+
+        const hero1Select = document.getElementById('hero1');
+        const hero2Select = document.getElementById('hero2');
+
+        hero1Select.addEventListener('change', function() {
+            fetchHeroInformation(this.value);
+        });
+
+        hero2Select.addEventListener('change', function() {
+            fetchHeroInformation(this.value);
+        });
+    </script>
+</body>
+</html>
