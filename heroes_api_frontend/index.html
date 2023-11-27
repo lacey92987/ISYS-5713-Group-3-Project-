@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Superhero Database</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Superhero Database</h1>
+
+    <h2>Heroes</h2>
+    <ul id="heroes-list">
+        <!-- Hero items will be inserted here -->
+    </ul>
+
+    <h2>Compare Powers</h2>
+    <label for="hero1">Select Hero 1: </label>
+    <select id="hero1">
+        <!-- Hero options will be inserted here -->
+    </select>
+
+    <label for="hero2">Select Hero 2: </label>
+    <select id="hero2">
+        <!-- Hero options will be inserted here -->
+    </select>
+
+    <button id="compare-button">Compare Powers</button>
+
+    <div id="comparison-result">
+        <!-- Comparison result will be displayed here -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Define the API endpoint URLs
+        const apiBaseUrl = 'http://localhost:5000';  // Replace with your API URL
+
+        // Function to fetch and display heroes
+        function fetchHeroes() {
+            fetch(`${apiBaseUrl}/heroes`)
+                .then(response => response.json())
+                .then(heroes => {
+                    const heroesList = document.getElementById('heroes-list');
+                    heroesList.innerHTML = '';  // Clear the existing list
+
+                    heroes.forEach(hero => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = hero.hero_name;
+                        heroesList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching heroes:', error));
+        }
+
+        // Function to fetch heroes and populate the comparison dropdowns
+        function fetchHeroesForComparison() {
+            fetch(`${apiBaseUrl}/heroes`)
+                .then(response => response.json())
+                .then(heroes => {
+                    const hero1Select = document.getElementById('hero1');
+                    const hero2Select = document.getElementById('hero2');
+                    hero1Select.innerHTML = '';  // Clear existing options
+                    hero2Select.innerHTML = '';  // Clear existing options
+
+                    heroes.forEach(hero => {
+                        // Create an option for each hero
+                        const option1 = document.createElement('option');
+                        option1.value = hero.hero_id;
+                        option1.textContent = hero.hero_name;
+                        hero1Select.appendChild(option1);
+
+                        const option2 = document.createElement('option');
+                        option2.value = hero.hero_id;
+                        option2.textContent = hero.hero_name;
+                        hero2Select.appendChild(option2);
+                    });
+                })
+                .catch(error => console.error('Error fetching heroes for comparison:', error));
+        }
+
+        // Function to compare powers of two heroes
+        function comparePowers() {
+            const hero1Id = document.getElementById('hero1').value;
+            const hero2Id = document.getElementById('hero2').value;
+
+            if (hero1Id === '' || hero2Id === '') {
+                alert('Please select both heroes to compare.');
+                return;
+            }
+
+            fetch(`${apiBaseUrl}/compare_power?hero_id1=${hero1Id}&hero_id2=${hero2Id}`)
+                .then(response => response.json())
+                .then(result => {
+                    const comparisonResult = document.getElementById('comparison-result');
+                    comparisonResult.textContent = `Winner: ${result.winner}`;
+                })
+                .catch(error => console.error('Error comparing powers:', error));
+        }
+
+        // Fetch and display heroes when the page loads
+        fetchHeroes();
+        // Populate the comparison dropdowns
+        fetchHeroesForComparison();
+
+        // Add a click event handler for the "Compare Powers" button
+        const compareButton = document.getElementById('compare-button');
+        compareButton.addEventListener('click', comparePowers);
+    </script>
+</body>
+</html>
+
+
+
