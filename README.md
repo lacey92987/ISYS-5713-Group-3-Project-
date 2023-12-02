@@ -25,8 +25,8 @@ An application that will allow users to look up superheroes and see the powers a
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
     - **Analysis Endpoints**
-        - `compare_powers`  
-        [**KAPOW! ZAP! WHAM!** Who Would Win in a Fight??](#compare_powers)
+        - `compare_power`  
+        [**KAPOW! ZAP! WHAM!** Who Would Win in a Fight??](#compare_power)
 1. [Data Information](#data-information)
 
 # Frontend Interface
@@ -197,7 +197,7 @@ http://localhost:5000/heroes/735
 }
 ```
 
-### Example Response
+#### Example Response
 ```json
 {
     "hero": {
@@ -306,7 +306,7 @@ http://localhost:5000/powers/2
 |**Description**|Returns the list of powers for the specified hero.|
 |**Parameters / Body**|-|
 
-#### Example Request & Body
+#### Example Request
 http://localhost:5000/heroes/36/powers
 
 #### Example Response
@@ -334,10 +334,10 @@ http://localhost:5000/heroes/36/powers
 ```
 
 -----------------
-### `/compare_powers`
+### `/compare_power`
 
 
-<span id="compare_powers"></span>
+<span id="compare_power"></span>
 
 |METHOD|`GET`|
 |---|---|
