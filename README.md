@@ -5,11 +5,12 @@ An application that will allow users to look up superheroes and see the powers a
 #### Table of Contents
 1. [Frontend Interface](#frontend-interface)
 1. [Configuration](#configuration)  
-1. [API Endpoints](#api-endpoints)
-    - [***Interactive Examples (Postman)***](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
-    - Configuration Endpoints
-        - [`/config/reset_database`: Reset the database](#configreset_database)
-    - Data Endpoints
+1. [**API Endpoints**](#api-endpoints)
+    - [*Interactive Examples (Postman)*](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
+    - **Configuration Endpoints**
+        - `/config/reset_database`  
+        [Reset the database](#configreset_database)
+    - **Data Endpoints**
         - `/heroes`  
         [Get all heroes](#heroes)  
         [Create a new hero](#post_hero)  
@@ -23,7 +24,7 @@ An application that will allow users to look up superheroes and see the powers a
         [Get a power by id](#powersid)  
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
-    - Analysis Endpoints
+    - **Analysis Endpoints**
         - `compare_powers`  
         [**KAPOW! ZAP! WHAM!** Who Would Win in a Fight??](#compare_powers)
 1. [Data Information](#data-information)
