@@ -22,6 +22,9 @@ An application that will allow users to look up superheroes and see the powers a
         [Get a power by id](#powersid)  
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
+    - Analysis Endpoints
+        - `compare_powers`  
+        [**KAPOW! ZAP! WHAM!** Who Would Win in a Fight??](#compare_powers)
 1. [Data Information](#data-information)
 
 # Frontend Interface
@@ -324,6 +327,33 @@ http://localhost:5000/heroes/36/powers
         "power_type": "Energy Manipulation"
     }
 ]
+```
+
+-----------------
+### `/compare_powers`
+
+
+<span id="compare_powers"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Compares the powers of two heroes specified and returns the winner of the fight.|
+|**Parameters**|`hero_id1`, `hero_id2` ***(both required)*** - ids of the heroes to fight. |
+
+#### Example Request
+http://localhost:5000/compare_power?hero_id1=57&hero_id2=105
+
+#### Example Response
+```json
+{
+    "hero_id1": "57",
+    "hero_id2": "105",
+    "hero_name1": "Azazel",
+    "hero_name2": "Black Manta",
+    "total_power1": 576,
+    "total_power2": 660,
+    "winner": "Black Manta"
+}
 ```
 
 # Data Information
