@@ -6,6 +6,7 @@ An application that will allow users to look up superheroes and see the powers a
 1. [Frontend Interface](#frontend-interface)
 1. [Configuration](#configuration)  
 1. [API Endpoints](#api-endpoints)
+    - [***Interactive Examples (Postman)***](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
     - Configuration Endpoints
         - [`/config/reset_database`: Reset the database](#configreset_database)
     - Data Endpoints
@@ -41,6 +42,8 @@ An application that will allow users to look up superheroes and see the powers a
 - In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed.
 
 # API Endpoints
+[***Interactive Examples (Postman)***](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
+
 The API supports the following endpoints:
 
 ## Configuration Endpoints
