@@ -5,10 +5,12 @@ An application that will allow users to look up superheroes and see the powers a
 #### Table of Contents
 1. [Frontend Interface](#frontend-interface)
 1. [Configuration](#configuration)  
-1. [API Endpoints](#api-endpoints)
-    - Configuration Endpoints
-        - [`/config/reset_database`: Reset the database](#configreset_database)
-    - Data Endpoints
+1. [**API Endpoints**](#api-endpoints)
+    - [*Interactive Examples (Postman)*](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
+    - **Configuration Endpoints**
+        - `/config/reset_database`  
+        [Reset the database](#configreset_database)
+    - **Data Endpoints**
         - `/heroes`  
         [Get all heroes](#heroes)  
         [Create a new hero](#post_hero)  
@@ -22,22 +24,27 @@ An application that will allow users to look up superheroes and see the powers a
         [Get a power by id](#powersid)  
         - `heroes/{id}/powers`  
         [Get powers for a hero by id](#heroesidpowers)
+    - **Analysis Endpoints**
+        - `compare_power`  
+        [**KAPOW! ZAP! WHAM!** Who Would Win in a Fight??](#compare_power)
 1. [Data Information](#data-information)
 
 # Frontend Interface
-*Details on our frontend interface, once created, will be housed here.*
+An interactive frontend application is located at [`heroes_api_frontend/frontend_dash.ipynb`](heroes_api_frontend\frontend_dash.ipynb). *(See below for important configuration information.)*
 
 # Configuration
 #### Backend configuration
 - Requires Python 3.x
 - After copying files to your directory, set up your python environment: `pip install requirements.txt`
-- The API runs from the `api.py` file.
+- The API runs from the [`api.py`](api.py) file.
 
 #### Frontend configuration
 - As this API is not currently hosted on any public server, you will need to run it in your own environment or elsewhere in order to use it. (Refer to backend configuration instructions above.)
-- In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed.
+- In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed, or the [`config.py`](config.py) file can be run directly.
 
 # API Endpoints
+[***Interactive Examples (Postman)***](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
+
 The API supports the following endpoints:
 
 ## Configuration Endpoints
@@ -190,7 +197,7 @@ http://localhost:5000/heroes/735
 }
 ```
 
-### Example Response
+#### Example Response
 ```json
 {
     "hero": {
@@ -299,7 +306,7 @@ http://localhost:5000/powers/2
 |**Description**|Returns the list of powers for the specified hero.|
 |**Parameters / Body**|-|
 
-#### Example Request & Body
+#### Example Request
 http://localhost:5000/heroes/36/powers
 
 #### Example Response
@@ -324,6 +331,33 @@ http://localhost:5000/heroes/36/powers
         "power_type": "Energy Manipulation"
     }
 ]
+```
+
+-----------------
+### `/compare_power`
+
+
+<span id="compare_power"></span>
+
+|METHOD|`GET`|
+|---|---|
+|**Description**|Compares the powers of two heroes specified and returns the winner of the fight.|
+|**Parameters**|`hero_id1`, `hero_id2` ***(both required)*** - ids of the heroes to fight. |
+
+#### Example Request
+http://localhost:5000/compare_power?hero_id1=57&hero_id2=105
+
+#### Example Response
+```json
+{
+    "hero_id1": "57",
+    "hero_id2": "105",
+    "hero_name1": "Azazel",
+    "hero_name2": "Black Manta",
+    "total_power1": 576,
+    "total_power2": 660,
+    "winner": "Black Manta"
+}
 ```
 
 # Data Information
