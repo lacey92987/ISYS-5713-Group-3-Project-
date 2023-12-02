@@ -29,7 +29,7 @@ An application that will allow users to look up superheroes and see the powers a
 1. [Data Information](#data-information)
 
 # Frontend Interface
-*Details on our frontend interface, once created, will be housed here.*
+An interactive frontend application is located at [`heroes_api_frontend/frontend_dash.ipynb`](heroes_api_frontend\frontend_dash.ipynb). *(See below for important configuration information.)*
 
 # Configuration
 #### Backend configuration
@@ -39,7 +39,7 @@ An application that will allow users to look up superheroes and see the powers a
 
 #### Frontend configuration
 - As this API is not currently hosted on any public server, you will need to run it in your own environment or elsewhere in order to use it. (Refer to backend configuration instructions above.)
-- In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed.
+- In case the working database is not set up or has been changed, the API method [`/config/reset_database` - `PUT`](#configreset_database) can be run on first use or as needed, or the `config.py` file can be run directly.
 
 # API Endpoints
 [***Interactive Examples (Postman)***](https://warped-crescent-504561.postman.co/workspace/ISYS-5713-Group-3-Project-~b8905e7d-bbcd-44af-b741-a51fd722e32f/collection/30949789-d70169e9-e896-49f1-9826-4670d339dd59?action=share&creator=30949789)
