@@ -338,7 +338,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": None,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -376,7 +376,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": None,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -940,9 +940,23 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\lacey\\AppData\\Local\\Temp\\ipykernel_19492\\3390872173.py:2: UserWarning: \n",
+      "The dash_core_components package is deprecated. Please replace\n",
+      "`import dash_core_components as dcc` with `from dash import dcc`\n",
+      "  import dash_core_components as dcc\n",
+      "C:\\Users\\lacey\\AppData\\Local\\Temp\\ipykernel_19492\\3390872173.py:3: UserWarning: \n",
+      "The dash_html_components package is deprecated. Please replace\n",
+      "`import dash_html_components as html` with `from dash import html`\n",
+      "  import dash_html_components as html\n"
+     ]
+    },
     {
      "name": "stdout",
      "output_type": "stream",
@@ -961,7 +975,7 @@
       "\u001b[0;32m   1237\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m name \u001b[38;5;129;01min\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mbefore_request_funcs:\n",
       "\u001b[0;32m   1238\u001b[0m     \u001b[38;5;28;01mfor\u001b[39;00m before_func \u001b[38;5;129;01min\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mbefore_request_funcs[name]:\n",
       "\u001b[1;32m-> 1239\u001b[0m         rv \u001b[38;5;241m=\u001b[39m \u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mensure_sync\u001b[49m\u001b[43m(\u001b[49m\u001b[43mbefore_func\u001b[49m\u001b[43m)\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\n",
-      "        before_func \u001b[1;34m= <bound method Dash._setup_server of <dash.dash.Dash object at 0x00000157E2D771A0>>\u001b[0m\u001b[1;34m\n",
+      "        before_func \u001b[1;34m= <bound method Dash._setup_server of <dash.dash.Dash object at 0x00000157E0DCA780>>\u001b[0m\u001b[1;34m\n",
       "        \u001b[0mself \u001b[1;34m= <Flask '__main__'>\u001b[0m\n",
       "\u001b[0;32m   1241\u001b[0m         \u001b[38;5;28;01mif\u001b[39;00m rv \u001b[38;5;129;01mis\u001b[39;00m \u001b[38;5;129;01mnot\u001b[39;00m \u001b[38;5;28;01mNone\u001b[39;00m:\n",
       "\u001b[0;32m   1242\u001b[0m             \u001b[38;5;28;01mreturn\u001b[39;00m rv\n",
@@ -970,7 +984,7 @@
       "\u001b[0;32m   1340\u001b[0m \u001b[38;5;28;01mif\u001b[39;00m \u001b[38;5;129;01mnot\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mlayout \u001b[38;5;129;01mand\u001b[39;00m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39muse_pages:\n",
       "\u001b[0;32m   1341\u001b[0m     \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mlayout \u001b[38;5;241m=\u001b[39m page_container\n",
       "\u001b[1;32m-> 1343\u001b[0m \u001b[43m_validate\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mvalidate_layout\u001b[49m\u001b[43m(\u001b[49m\u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mlayout\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;28;43mself\u001b[39;49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_layout_value\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\u001b[43m)\u001b[49m\n",
-      "        self \u001b[1;34m= <dash.dash.Dash object at 0x00000157E2D771A0>\u001b[0m\u001b[1;34m\n",
+      "        self \u001b[1;34m= <dash.dash.Dash object at 0x00000157E0DCA780>\u001b[0m\u001b[1;34m\n",
       "        \u001b[0m_validate \u001b[1;34m= <module 'dash._validate' from 'c:\\\\Users\\\\lacey\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\Lib\\\\site-packages\\\\dash\\\\_validate.py'>\u001b[0m\n",
       "\u001b[0;32m   1345\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_generate_scripts_html()\n",
       "\u001b[0;32m   1346\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39m_generate_css_dist_html()\n",
@@ -1009,7 +1023,7 @@
        "        "
       ],
       "text/plain": [
-       "<IPython.lib.display.IFrame at 0x157e1f3d910>"
+       "<IPython.lib.display.IFrame at 0x157e28cebd0>"
       ]
      },
      "metadata": {},
