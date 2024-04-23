@@ -258,7 +258,7 @@ from controller import *
 
 def select_all_heroes(limit):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT * FROM heroes LIMIT %s', (limit,))
         results = cur.fetchall()
@@ -273,7 +273,7 @@ def select_all_heroes(limit):
 
 def select_all_powers(limit):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT * FROM powers LIMIT %s', (limit,))
         results = cur.fetchall()
@@ -288,7 +288,7 @@ def select_all_powers(limit):
 
 def select_hero(id):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT * FROM heroes WHERE hero_id = %s', (id,))
         result = cur.fetchone()
@@ -302,7 +302,7 @@ def select_hero(id):
 
 def select_power(id):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT * FROM powers WHERE power_id = %s', (id,))
         result = cur.fetchone()
@@ -316,7 +316,7 @@ def select_power(id):
 
 def select_hero_powers(hero_id):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT hero_name FROM heroes WHERE hero_id = %s', (hero_id,))
         hero_result = cur.fetchone()
@@ -348,7 +348,7 @@ def select_hero_powers(hero_id):
 
 def insert_hero(data):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('''
             INSERT INTO heroes (hero_name, gender, eye_color, species, hair_color, height, weight, publisher, skin_color, alignment)

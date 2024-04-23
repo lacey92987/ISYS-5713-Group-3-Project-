@@ -209,7 +209,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import psycopg2
 from pathlib import Path
-from controller import DATABASE_PARAMS
+from controller import connection_string
 from config import create_database_schema, load_data
 from model import *
 
@@ -320,7 +320,7 @@ def compare_power():
     if not hero_id1 or not hero_id2:
         return jsonify({"error": "Both hero_id1 and hero_id2 parameters are required"}), 400
 
-    conn = psycopg2.connect(**DATABASE_PARAMS)
+    conn = psycopg2.connect(connection_string)
     cursor = conn.cursor()
 
     cursor.execute("""

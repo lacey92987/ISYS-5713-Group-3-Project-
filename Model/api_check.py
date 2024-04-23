@@ -37,20 +37,24 @@ DATABASE_FILE = DB_PATH / 'database.db'
 #     # Get all heroes from the heroes table
 #     cur.execute('SELECT * FROM heroes')
 #     return cur.fetchall()
-
+import os
 import psycopg2
 from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-# PostgreSQL connection parameters
-DATABASE_PARAMS = {
-    'host': 'lcdouglas.postgres.database.azure.com',
-    'port': '5432',
-    'dbname': 'database',
-    'user': 'lcdouglas',
-    'password': 'N3/tle12'
-}
+# # PostgreSQL connection parameters
+# DATABASE_PARAMS = {
+#     'host': 'lcdouglas.postgres.database.azure.com',
+#     'port': '5432',
+#     'dbname': 'database',
+#     'user': 'lcdouglas',
+#     'password': 'N3/tle12'
+# }
+
+# Access Connection String
+connection_string = os.environ.get('DATABASE_URL')
+
 
 @app.route('/')
 def index():
@@ -64,7 +68,7 @@ def get_heroes():
 def select_all_heroes():
     try:
         # Establish connection to PostgreSQL database
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         
         # Execute query to get all heroes from the heroes table

@@ -15,17 +15,20 @@ Contains paths to the database and data files.
 ##POWERS_FILENAME = DATA_FOLDER / 'powers.csv'
 ##HEROES_POWERS_FILENAME = DATA_FOLDER / 'heroes_powers_convert.csv'
 
-# Import the necessary module
+import os
 import psycopg2
 
+# Access Connection String
+connection_string = os.environ.get('DATABASE_URL')
+
 # Define the connection parameters
-DATABASE_PARAMS = {
-    'host': 'lcdouglas.postgres.database.azure.com',
-    'port': '5432',
-    'dbname': 'database',
-    'user': 'lcdouglas',
-    'password': 'N3/tle12'
-}
+# DATABASE_PARAMS = {
+#     'host': 'lcdouglas.postgres.database.azure.com',
+#     'port': '5432',
+#     'dbname': 'database',
+#     'user': 'lcdouglas',
+#     'password': 'N3/tle12'
+# }
 
 # Define the table names
 HEROES_TABLE = 'heroes'

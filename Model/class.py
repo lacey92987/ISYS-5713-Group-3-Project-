@@ -23,7 +23,7 @@
 
 import psycopg2
 from flask import Flask, request, jsonify
-from controller import DATABASE_PARAMS
+from controller import connection_string
 
 app = Flask(__name__)
 
@@ -35,7 +35,7 @@ def get_powers():
 
 def select_all_powers(limit):
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         cur.execute('SELECT * FROM powers LIMIT %s', (limit,))
         results = cur.fetchall()

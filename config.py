@@ -131,7 +131,7 @@ from controller import *
 def create_database_schema():
     """Function to create the database schema."""
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
 
         # Drop tables if they exist
@@ -189,7 +189,7 @@ def load_data():
         raise Exception("One or more of the data files does not exist at the expected location.")
 
     try:
-        conn = psycopg2.connect(**DATABASE_PARAMS)
+        conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
 
         # Load data into the heroes table
