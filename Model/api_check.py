@@ -1,18 +1,18 @@
-from flask import Flask
-from flask import jsonify
-from flask import request
-from flask_cors import CORS
-import sqlite3
-from pathlib import Path
+# from flask import Flask
+# from flask import jsonify
+# from flask import request
+# from flask_cors import CORS
+# import sqlite3
+# from pathlib import Path
 
-###
+# ###
 
-# Setup
-###
-app = Flask(__name__) 
-CORS(app)
-DB_PATH = Path.cwd() 
-DATABASE_FILE = DB_PATH / 'database.db'
+# # Setup
+# ###
+# app = Flask(__name__) 
+# CORS(app)
+# DB_PATH = Path.cwd() 
+# DATABASE_FILE = DB_PATH / 'database.db'
 
 ###
 # Routes
@@ -44,8 +44,15 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-# Access Connection String
-connection_string = os.environ.get('DATABASE_URL')
+db_params = {
+    'user': 'lcdouglas',
+    'password': 'N3/tle12',
+    'host': 'lcdouglas.postgres.database.azure.com',
+    'port': 5432,
+    'database': 'database'
+}
+
+
 
 
 @app.route('/')
@@ -60,7 +67,7 @@ def get_heroes():
 def select_all_heroes():
     try:
         # Establish connection to PostgreSQL database
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         
         # Execute query to get all heroes from the heroes table

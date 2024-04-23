@@ -475,8 +475,13 @@ CORS(app)
 
 
 
-# Access Connection String
-connection_string = os.environ.get('DATABASE_URL')
+db_params = {
+    'user': 'lcdouglas',
+    'password': 'N3/tle12',
+    'host': 'lcdouglas.postgres.database.azure.com',
+    'port': 5432,
+    'database': 'database'
+}
 
 # Path to your database file
 DB_PATH = Path.cwd() / 'Model'
@@ -532,7 +537,7 @@ class Hero:
 def reset_database():
     try:
         # Clear the database
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         cur.execute('DELETE FROM heroes_powers')
         cur.execute('DELETE FROM heroes')
@@ -540,7 +545,7 @@ def reset_database():
         conn.commit()
 
         # Copy the original database file
-        with psycopg2.connect(connection_string) as conn:
+        with psycopg2.connect(**db_params) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT * FROM heroes')
                 heroes = cur.fetchall()
@@ -550,7 +555,7 @@ def reset_database():
                 heroes_powers = cur.fetchall()
 
         # Insert the original data into the database
-        with psycopg2.connect(connection_string) as conn:
+        with psycopg2.connect(**db_params) as conn:
             with conn.cursor() as cur:
                 cur.executemany('INSERT INTO heroes VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', heroes)
                 cur.executemany('INSERT INTO powers VALUES (%s,%s,%s,%s)', powers)
@@ -573,7 +578,7 @@ def get_heroes():
 
 def select_all_heroes(limit):
     try:
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         cur.execute('SELECT * FROM heroes LIMIT %s', (limit,))
         results = cur.fetchall()
@@ -594,7 +599,7 @@ def get_powers():
 
 def select_all_powers(limit):
     try:
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         cur.execute('SELECT * FROM powers LIMIT %s', (limit,))
         results = cur.fetchall()
@@ -618,7 +623,7 @@ def get_hero(id):
 
 def select_hero(id):
     try:
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         cur.execute('SELECT * FROM heroes WHERE hero_id = %s', (id,))
         result = cur.fetchone()
