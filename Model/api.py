@@ -473,14 +473,7 @@ from typing import List
 app = Flask(__name__)
 CORS(app)
 
-# Define your PostgreSQL connection parameters
-# DATABASE_PARAMS = {
-#     'host': 'lcdouglas.postgres.database.azure.com',
-#     'port': '5432',
-#     'dbname': 'database',
-#     'user': 'lcdouglas',
-#     'password': 'N3/tle12'
-# }
+
 
 # Access Connection String
 connection_string = os.environ.get('DATABASE_URL')
