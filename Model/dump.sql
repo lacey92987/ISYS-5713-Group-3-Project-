@@ -1,4 +1,4 @@
-PRAGMA foreign_keys=OFF;
+
 BEGIN TRANSACTION;
 CREATE TABLE heroes (
             hero_id INTEGER NOT NULL
@@ -300,7 +300,7 @@ INSERT INTO heroes VALUES(283,'Giant-Man II','Male','','','',-99.0,-99.0,'Marvel
 INSERT INTO heroes VALUES(284,'Giganta','Female','green','','Red',62.5,630.0,'DC Comics','','bad');
 INSERT INTO heroes VALUES(285,'Gladiator','Male','blue','Strontian','Blue',198.0,268.0,'Marvel Comics','purple','neutral');
 INSERT INTO heroes VALUES(286,'Goblin Queen','Female','green','','Red',168.0,50.0,'Marvel Comics','','bad');
-INSERT INTO heroes VALUES(287,'Godzilla','','','Kaiju','',108.0,'','','grey','bad');
+INSERT INTO heroes VALUES(287,'Godzilla','','','Kaiju','',108.0,NULL,'','grey','bad');
 INSERT INTO heroes VALUES(288,'Gog','Male','','','',-99.0,-99.0,'DC Comics','','bad');
 INSERT INTO heroes VALUES(289,'Goku','Male','','Saiyan','',175.0,62.0,'Shueisha','','good');
 INSERT INTO heroes VALUES(290,'Goliath','Male','','','',-99.0,-99.0,'Marvel Comics','','good');
@@ -403,7 +403,7 @@ INSERT INTO heroes VALUES(386,'Kid Flash II','Male','','','',-99.0,-99.0,'DC Com
 INSERT INTO heroes VALUES(387,'Killer Croc','Male','red','Metahuman','No Hair',244.0,356.0,'DC Comics','green','bad');
 INSERT INTO heroes VALUES(388,'Killer Frost','Female','blue','Human','Blond',-99.0,-99.0,'DC Comics','blue','bad');
 INSERT INTO heroes VALUES(389,'Kilowog','Male','red','Bolovaxian','No Hair',234.0,324.0,'DC Comics','pink','good');
-INSERT INTO heroes VALUES(390,'King Kong','Male','yellow','Animal','Black',30.5,'','','','good');
+INSERT INTO heroes VALUES(390,'King Kong','Male','yellow','Animal','Black',30.5,NULL,'','','good');
 INSERT INTO heroes VALUES(391,'King Shark','Male','black','Animal','No Hair',-99.0,-99.0,'DC Comics','','bad');
 INSERT INTO heroes VALUES(392,'Kingpin','Male','blue','Human','No Hair',201.0,203.0,'Marvel Comics','','bad');
 INSERT INTO heroes VALUES(393,'Klaw','Male','red','Human','No Hair',188.0,97.0,'Marvel Comics','red','bad');
