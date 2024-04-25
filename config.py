@@ -131,7 +131,7 @@ from controller import *
 def create_database_schema():
     """Function to create the database schema."""
     try:
-        conn = psycopg2.connect(connection_string)
+        conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
 
         # Drop tables if they exist
